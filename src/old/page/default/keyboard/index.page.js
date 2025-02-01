@@ -1,13 +1,6 @@
-import { KEYBOARD_TYPE } from '../../../utils/keyboard'
 import { TEXT_STYLE } from './index.style'
-import { InputMethod, themeList } from '../../../utils/inputMethod/inputMethod'
-import { data } from '../../../utils/data'
+import { InputMethod } from '../../../utils/inputMethod/inputMethod'
 
-//TODO start.js
-const jsonExample = {
-  type: KEYBOARD_TYPE.EN,
-  max: 20,
-}
 
 const logger = DeviceRuntimeCore.HmLogger.getLogger('helloworld')
 

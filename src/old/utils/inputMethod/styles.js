@@ -1,0 +1,120 @@
+// 获取设备信息
+const {
+    width: DEVICE_WIDTH,
+    height: DEVICE_HEIGHT,
+    screenShape: DEVICE_SHAPE, // [0]方屏 | [1]圆屏
+} = hmSetting.getDeviceInfo();
+
+// 全局常量
+export const BOUNDARY_Y = DEVICE_SHAPE ? px(190) : px(190); // InputBox和Keyboard分界线y坐标
+export const FUNCTION_BAR_H = DEVICE_SHAPE ? px(50) : px(50); // 预留给选词和工具区域的高度
+
+// 键盘类型
+export const KEYBOARD_TYPE = {
+    EN: 0, // 英文键盘
+    NUM: 1, // 数字键盘
+    ZH_CN_PY: 2, // 中文拼音键盘
+};
+
+// 输入框类型
+export const INPUTBOX_TYPE = {
+    NORMAL: 0, // 普通输入框
+    PASSWORD: 1, // 密码输入框
+};
+
+// 事件类型
+export const LINK_EVENT_TYPE = {
+    FINISH: 1, // 输入完成
+    INPUT: 2, // 输入事件
+    DELETE: 3, // 删除事件
+    CHANGE: 4, // 内容变化事件
+};
+
+// 键盘状态
+export const KeyBoardCondition = {
+    FREE: 0, // 空闲状态
+    WAIT_WORD: 1, // 等候选词
+    PRESS: 2, // 按下状态
+};
+
+// 示例JSON配置
+export const jsonExample = {
+    keyboardList: [0, 1, 2], // 键盘列表
+    from: {
+        appid: 0, // 应用ID
+        url: "", // URL
+        param: "{}", // 传参，提供给调用源作为补充，会一模一样返回去
+    },
+    theme: {
+        // 主题配置
+        inputbox: {
+            finishBtn: {
+                normal_color: 0xfff1a6, // 完成按钮正常颜色
+                press_color: 0x666142, // 完成按钮按下颜色
+            },
+            inputBoxMask: {
+                src: "image/inputbox_mask_Earth.png", // 输入框遮罩图片
+            },
+            background: {
+                color: 0x333333, // 背景颜色
+                type: "img", // 类型：图片
+                src: "image/inputbox_bgd_Earth.png", // 背景图片
+            },
+        },
+        keyboard: {
+            functionBar: {
+                color: 0x494949, // 功能栏颜色
+                type: "img", // 类型：图片
+                src: "image/functionBar_Earth.png", // 功能栏图片
+            },
+            background: {
+                color: 0x222222, // 键盘背景颜色
+                type: "img", // 类型：图片
+                src: "image/keyboard_bgd_Earth.png", // 键盘背景图片
+            },
+            button: {
+                color: 0x555555, // 按钮颜色
+                radius: 6, // 按钮圆角
+                distance_v: 6, // 行之间距离
+                distance_h: 6, // 列之间距离
+                press_color: 0xee6666, // 按钮按下颜色
+                src: "image/keyboardEN_button_Earth.png", // 按钮图片
+                src_up: "image/keyboardEN_button_Earth_UP.png", // 按钮抬起图片
+            },
+        },
+    },
+    longPressMs: 300, // 长按触发时间（毫秒）
+    longPressMsAfterMove: 600, // 移动后长按触发时间（毫秒）
+    safetyDistance: px(40), // 安全距离
+    delTimeMs: 180, // 删除按键触发时间（毫秒）
+};
+let ball = null; // 全局变量：小球
+
+// 点击事件处理函数
+export function click() {
+    // 振动反馈（注释掉的代码）
+    // vibrate.stop();
+    // vibrate.scene = 0;
+    // vibrate.start();
+
+    if (ball == null) {
+        // 创建小球
+        ball = hmUI.createWidget(hmUI.widget.FILL_RECT, {
+            x: 0,
+            y: 0,
+            w: px(30),
+            h: px(30),
+            radius: px(15),
+            color: 0xff0000, // 红色
+        });
+    } else {
+        // 设置小球颜色为红色
+        ball.setProperty(hmUI.prop.COLOR, 0xff0000);
+    }
+
+    // 定时器：50ms后将小球颜色改为黑色
+    let timerId = timer.createTimer(50, 2147483648, (option) => {
+        ball.setProperty(hmUI.prop.COLOR, 0x000000); // 黑色
+        timer.stopTimer(timerId); // 停止定时器
+    });
+}
