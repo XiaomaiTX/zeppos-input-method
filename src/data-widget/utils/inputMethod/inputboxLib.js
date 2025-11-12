@@ -3,7 +3,7 @@
 // onTouch(event, info) 若位置不在范围内event为MOVE_OUT 返回值为输入类型
 // onDelete()
 
-import { dataManager } from "./dataManager";
+// import { dataManager } from "./dataManager";
 import { Fx } from "../fx";
 import { click } from "./method";
 import { LINK_EVENT_TYPE,InputboxCondition } from "./styles";
@@ -295,7 +295,7 @@ export const InputBoxLib = [
                 });
             } else if (
                 // dataManager.json.theme.inputbox.background.type == "rect"
-                img == "rect"
+                "img" == "rect"
             ) {
                 this.backgroundWidget = hmUI.createWidget(
                     hmUI.widget.FILL_RECT,
@@ -304,7 +304,7 @@ export const InputBoxLib = [
                         y: px(100),
                         w: px(285),
                         h: px(70),
-                        color: dataManager.json.theme.inputbox.background.color,
+                        color: 0x333333,
                     }
                 );
             }
@@ -313,11 +313,10 @@ export const InputBoxLib = [
             // this.btnBorderWidget = hmUI.createWidget(hmUI.widget.STROKE_RECT, { x: px(310), y: px(95), w: px(120), h: px(75), line_width: px(4), color: 0xffffff, radius: px(15) })
             this.textLine.onCreate();
             this.cursor.onCreate();
-            console.debug(dataManager.json.theme.inputbox.inputBoxMask.src);
             this.mask = hmUI.createWidget(hmUI.widget.IMG, {
                 x: px(0),
                 y: px(0),
-                src: dataManager.json.theme.inputbox.inputBoxMask.src,
+                src: "image/inputbox_mask_Earth.png",
             });
             this.btnTextWidget = hmUI.createWidget(hmUI.widget.TEXT, {
                 x: px(335),
@@ -326,7 +325,7 @@ export const InputBoxLib = [
                 h: px(55),
                 text: "完成",
                 text_size: px(35),
-                color: dataManager.json.theme.inputbox.finishBtn.normal_color,
+                color: 0xfff1a6,
                 align_h: hmUI.align.CENTER_H,
                 align_v: hmUI.align.CENTER_V,
             });
@@ -372,10 +371,8 @@ export const InputBoxLib = [
                                 this.btnTextWidget.setProperty(
                                     hmUI.prop.COLOR,
                                     Fx.getMixColor(
-                                        dataManager.json.theme.inputbox
-                                            .finishBtn.normal_color,
-                                        dataManager.json.theme.inputbox
-                                            .finishBtn.press_color,
+                                        0xfff1a6,
+                                        0x666142,
                                         res
                                     )
                                 ),
@@ -392,10 +389,8 @@ export const InputBoxLib = [
                                         this.btnTextWidget.setProperty(
                                             hmUI.prop.COLOR,
                                             Fx.getMixColor(
-                                                dataManager.json.theme.inputbox
-                                                    .finishBtn.press_color,
-                                                dataManager.json.theme.inputbox
-                                                    .finishBtn.normal_color,
+                                                0x666142,
+                                                0xfff1a6,
                                                 res
                                             )
                                         ),

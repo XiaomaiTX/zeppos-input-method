@@ -14,7 +14,7 @@ import {
 } from "./styles";
 import { click } from "./method";
 import { Fx } from "../fx";
-import { dataManager } from "./dataManager";
+// import { dataManager } from "./dataManager";
 
 import { pinyin_dict_notone } from "./pinyin_dict_notone";
 
@@ -210,7 +210,7 @@ class BaseKeyboard {
                         console.debug("timer for delete! create");
                         this.longPressTimer = timer.createTimer(
                             5,
-                            dataManager.json.delTimeMs,
+                            180, // 删除按键触发时间（毫秒）
                             (option) => {
                                 console.debug("timer for delete! callback");
 
@@ -235,17 +235,19 @@ class BaseKeyboard {
         // 新建功能栏
         if (SCREEN_SHAPE_SQUARE) {
             // 圆屏
-            if (dataManager.json.theme.keyboard.functionBar.type == "rect") {
+            // if (dataManager.json.theme.keyboard.functionBar.type == "rect") {
+            if ("img" == "rect") {
                 this.functionBar = hmUI.createWidget(hmUI.widget.FILL_RECT, {
                     x: px(0),
                     y: px(400),
                     w: px(480),
                     h: px(480) - BOUNDARY_Y,
-                    color: dataManager.json.theme.keyboard.functionBar.color,
+                    color: 0x494949,
                     radius: px(0),
                 });
             } else if (
-                dataManager.json.theme.keyboard.functionBar.type == "img"
+                // dataManager.json.theme.keyboard.functionBar.type == "img"
+                "img" == "img"
             ) {
                 this.functionBar = hmUI.createWidget(hmUI.widget.IMG, {
                     x: px(0),
@@ -254,7 +256,7 @@ class BaseKeyboard {
                     h: px(480) - BOUNDARY_Y,
                     pos_x: 0,
                     pos_y: 0 - px(400),
-                    src: dataManager.json.theme.keyboard.functionBar.src,
+                    src: "image/functionBar_Earth.png",
                 });
             }
             new Fx({
@@ -266,7 +268,7 @@ class BaseKeyboard {
                 enable: true,
                 func: (res) => {
                     if (
-                        dataManager.json.theme.keyboard.functionBar.type ==
+                        "img" ==
                         "img"
                     ) {
                         this.functionBar.setProperty(hmUI.prop.MORE, {
@@ -274,7 +276,7 @@ class BaseKeyboard {
                             pos_y: 0 - res,
                         });
                     } else if (
-                        dataManager.json.theme.keyboard.functionBar.type ==
+                        "img" ==
                         "rect"
                     ) {
                         this.functionBar.setProperty(hmUI.prop.Y, res);
@@ -288,17 +290,17 @@ class BaseKeyboard {
         // 创建背景
         if (SCREEN_SHAPE_SQUARE) {
             // 圆屏
-            if (dataManager.json.theme.keyboard.background.type == "rect") {
+            if ("img" == "rect") {
                 this.background = hmUI.createWidget(hmUI.widget.FILL_RECT, {
                     x: px(0),
                     y: px(400),
                     w: px(480),
                     h: px(480) - BOUNDARY_Y - FUNCTION_BAR_H,
-                    color: dataManager.json.theme.keyboard.background.color,
+                    color: 0x222222,
                     radius: px(0),
                 });
             } else if (
-                dataManager.json.theme.keyboard.background.type == "img"
+                "img" == "img"
             ) {
                 this.background = hmUI.createWidget(hmUI.widget.IMG, {
                     x: px(0),
@@ -307,7 +309,7 @@ class BaseKeyboard {
                     h: px(480) - BOUNDARY_Y - FUNCTION_BAR_H,
                     pos_x: 0,
                     pos_y: 0 - px(400),
-                    src: dataManager.json.theme.keyboard.background.src,
+                    src: "image/keyboard_bgd_Earth.png",
                 });
             }
             this.buttonImg = hmUI.createWidget(hmUI.widget.IMG, {
@@ -315,7 +317,7 @@ class BaseKeyboard {
                 y: px(400),
                 w: px(480),
                 h: px(240),
-                src: dataManager.json.theme.keyboard.button.src,
+                src: "image/keyboardEN_button_Earth.png",
             });
             new Fx({
                 begin: px(400),
@@ -326,14 +328,14 @@ class BaseKeyboard {
                 enable: true,
                 func: (res) => {
                     if (
-                        dataManager.json.theme.keyboard.background.type == "img"
+                        "img" == "img"
                     ) {
                         this.background.setProperty(hmUI.prop.MORE, {
                             y: res,
                             pos_y: 0 - res,
                         });
                     } else if (
-                        dataManager.json.theme.keyboard.background.type ==
+                        "img" ==
                         "rect"
                     ) {
                         this.background.setProperty(hmUI.prop.Y, res);
@@ -356,9 +358,9 @@ class BaseKeyboard {
             y: px(0),
             w: px(42),
             h: px(50),
-            color: dataManager.json.theme.keyboard.button.press_color,
+            color: 0xee6666,
             line_width: px(3),
-            radius: dataManager.json.theme.keyboard.button.radius,
+            radius: 6,
         });
         this.chooseWordText.widget = hmUI.createWidget(hmUI.widget.TEXT, {
             x: 0,
@@ -387,10 +389,9 @@ class BaseKeyboard {
                     this.condition &= ~KeyBoardCondition.PRESS; // 清除此状态位
                     let temp = hmUI.createWidget(hmUI.widget.STROKE_RECT, {
                         ...this.pressMask.border,
-                        color: dataManager.json.theme.keyboard.button
-                            .press_color,
+                        color: 0xee6666,
                         line_width: px(3),
-                        radius: dataManager.json.theme.keyboard.button.radius,
+                        radius: 6,
                     });
                     new Fx({
                         begin: 0,
@@ -403,10 +404,8 @@ class BaseKeyboard {
                             temp.setProperty(
                                 hmUI.prop.COLOR,
                                 Fx.getMixColor(
-                                    dataManager.json.theme.keyboard.button
-                                        .press_color,
-                                    dataManager.json.theme.keyboard.button
-                                        .color,
+                                    0xee6666,
+                                    0x555555,
                                     res
                                 )
                             ),
@@ -448,7 +447,7 @@ class BaseKeyboard {
                                 timer.stopTimer(this.longPressTimer);
                             }
                             this.longPressTimer = timer.createTimer(
-                                dataManager.json.longPressMsAfterMove,
+                                600,// 移动后长按触发时间（毫秒）
                                 2147483648,
                                 (option) => this.longPress(),
                                 {}
@@ -484,7 +483,7 @@ class BaseKeyboard {
                                 timer.stopTimer(this.longPressTimer);
                             }
                             this.longPressTimer = timer.createTimer(
-                                dataManager.json.longPressMs,
+                                300, // 长按触发时间（毫秒）
                                 2147483648,
                                 (option) => this.longPress(),
                                 {}
@@ -518,7 +517,7 @@ class BaseKeyboard {
                         timer.stopTimer(this.longPressTimer);
                     }
                     this.longPressTimer = timer.createTimer(
-                        dataManager.json.longPressMs,
+                        300, // 长按触发时间（毫秒）
                         2147483648,
                         (option) => this.longPress(),
                         {}
