@@ -1,308 +1,524 @@
-import { SmoothTimer, createSmoothTimer, stopSmoothTimer } from "./smoothTimer";
+/**
+ * fx.js
+ * @description 一个用于在ZeppOS中提供简单动画的库
+ * @version 2.0.1
+ * @date 2025/04/06
+ * @author CuberQAQ XiaomaiTX
+ * @license MIT
+ * @repository https://github.com/XiaomaiTX/zeppos-fx
+ */
 
-// CuberQAQ
-// 用来提供简易动画的库
-// Open Source Lisence: MIT <https://opensource.org/licenses/mit-license.php>
+/**
+ * 弹跳函数辅助计算
+ * @param {number} x 输入值 [0,1]
+ * @returns {number} 计算结果
+ * @private
+ */
+const bounceOut = function (x) {
+    const n1 = 7.5625;
+    const d1 = 2.75;
 
-// Fx 动画类
-// 提供了使用预设和不使用预设两种方式
-// 提供的预设(Fx.Styles的成员变量)有：
-//   LINEAR 线性
-//   EASE_IN_QUAD 二次平滑减速
-//   EASE_OUT_QUAD 二次平滑加速
-//   EASE_IN_OUT_QUAD 二次平滑加速后减速
-// 示例代码(使用预设):
-// let fx = new Fx({
-//   begin: 100, // 初始函数值
-//   end: 200,   // 结束函数值
-//   fps: 60,    // 帧率
-//   time: 1,    // 总时长(秒)
-//   style: Fx.Styles.EASE_IN_OUT_QUAD, // 预设类型 见注释第7-9行
-//   onStop() {console.log("anim stop")}, // 动画结束后的回调函数
-//
-//   // 每一帧的回调函数，参数为当前函数值，取值范围为[begin, end]
-//   func: result => text.setProperty(hmUI.prop.X, result),
-//   // useSmoothTimer: false // 若不需要稳定的计时器可取消注释
-// })
-// fx.restart() // 播放动画 可以重复多次调用
-// 不使用预设太麻烦了 不如不用
-//
-// 还提供了一个专为颜色渐变设计的函数getMixColor，可以获取两个颜色的中间色
+    if (x < 1 / d1) {
+        return n1 * x * x;
+    } else if (x < 2 / d1) {
+        return n1 * (x -= 1.5 / d1) * x + 0.75;
+    } else if (x < 2.5 / d1) {
+        return n1 * (x -= 2.25 / d1) * x + 0.9375;
+    } else {
+        return n1 * (x -= 2.625 / d1) * x + 0.984375;
+    }
+};
+
+/**
+ * 动画类
+ */
 export class Fx {
-  // constructor 构造函数
-  // 参数:
-  //   -----不使用预设-----
-  //   x_start 函数开始的x坐标
-  //   x_end 函数结束的x坐标
-  //   fps 动画帧率
-  //   time 执行总时间
-  //   fx: x => y 动画函数
-  //   func(y) 执行的函数，每次的y值会作为第一个参数传给func
-  //   onStop() 结束后执行的函数
-  //   useSmoothTimer 使用稳定计时器 默认为true
-  //   -----使用预设-----
-  //   begin 初始值
-  //   end 结束值
-  //   fps 动画帧率
-  //   time 执行总时间
-  //   style 内置过渡类型
-  //   func(y) 执行的函数，每次的y值会作为第一个参数传给func
-  //   onStop 结束后执行的函数
-  //   useSmoothTimer 使用稳定计时器 默认为true
-  //
-  //  outTimer可以为true 则需提供周期与fps相符合的外部计时器 每个周期调用一次step()
-  //
-  //  利用getMixColor混合颜色 getMixBorderr混合边框的示例
-  //  let rect = hmUI.createWidget(hmUI.widget.FILL_RECT, {
-  //    x: 0,
-  //    y: 0,
-  //    w: 50,
-  //    h: 100,
-  //    radius: 10,
-  //    color: 0xff3232,
-  //  });
-  //  let fx = new Fx({
-  //    begin: 0, // 初始函数值
-  //    end: 1, // 结束函数值
-  //    fps: 60, // 帧率
-  //    time: 1, // 总时长(秒)
-  //    style: Fx.Styles.EASE_IN_OUT_QUAD, // 预设类型 见注释第7-9行
-  //    onStop() {
-  //      console.log("anim stop");
-  //    }, // 动画结束后的回调函数
-  //    // 每一帧的回调函数，参数为当前函数值，取值范围为[begin, end]
-  //    func: (result) => {
-  //      rect.setProperty(
-  //        hmUI.prop.COLOR,
-  //        Fx.getMixColor(0xff3232, 0x3232ff, result)
-  //      );
-  //      rect.setProperty(hmUI.prop.MORE, {
-  //        ...Fx.getMixBorder(
-  //          {
-  //            x: 0,
-  //            y: 0,
-  //            w: 50,
-  //            h: 100,
-  //            radius: 25,
-  //          },
-  //          {
-  //            x: 150,
-  //            y: 200,
-  //            w: 200,
-  //            h: 250,
-  //            radius: 75
-  //          },
-  //          result
-  //        ),
-  //      });
-  //    },
-  //    // useSmoothTimer: false // 若不需要稳定的计时器可取消注释
-  //  });
-  //  fx.restart(); // 播放动画 可以重复多次调用
-  // 
-  constructor({
-    delay,
-    begin,
-    end,
-    x_start,
-    x_end,
-    time,
-    fx,
-    func,
-    fps,
-    enable,
-    style,
-    onStop,
-    outTimer,
-    useSmoothTimer,
-  }) {
-    if (fx) {
-      // 不使用预设
-      this.x_start = x_start * 1.0;
-      this.x_end = x_end * 1.0;
-      this.fx = fx;
-      this.speed = (x_end - x_start) / (time * fps);
-    } else {
-      // 使用预设
-      this.begin = begin;
-      this.end = end;
-      this.fps = fps;
-      this.time = time;
-      switch (style) {
-        case Fx.Styles.LINEAR:
-          this.fx = (x) => fx_inside.LINEAR(x, begin, end, fps * time);
-          this.x_start = 0;
-          this.x_end = fps * time;
-          this.speed = 1;
-          break;
-        case Fx.Styles.EASE_IN_OUT_QUAD:
-          this.fx = (x) =>
-            fx_inside.EASE_IN_OUT_QUAD(x, begin, end, fps * time);
-          this.x_start = 0;
-          this.x_end = fps * time;
-          this.speed = 1;
-          break;
-        case Fx.Styles.EASE_IN_QUAD:
-          this.fx = (x) =>
-            fx_inside.EASE_IN_QUAD(x, begin, end, this.fps * this.time);
-          this.x_start = 0;
-          this.x_end = fps * time;
-          this.speed = 1;
-          break;
-        case Fx.Styles.EASE_OUT_QUAD:
-          this.fx = (x) => fx_inside.EASE_OUT_QUAD(x, begin, end, fps * time);
-          this.x_start = 0;
-          this.x_end = fps * time;
-          this.speed = 1;
-          break;
-      }
+    /**
+     * 创建动画实例
+     * @param {Object} options 配置选项
+     * @param {number} [options.delay=0] 延迟执行时间(毫秒)
+     * @param {number} [options.begin=0] 初始函数值
+     * @param {number} [options.end=100] 目标函数值
+     * @param {number} [options.x_start] 自定义函数的开始x坐标
+     * @param {number} [options.x_end] 自定义函数的结束x坐标
+     * @param {number} [options.time=1] 执行总时间(秒)
+     * @param {Function} [options.fx] 自定义x=>y动画函数
+     * @param {Function} options.func 每帧执行的回调函数，参数为当前值
+     * @param {number} [options.fps=60] 动画帧率
+     * @param {boolean} [options.enable=true] 是否启用
+     * @param {number} [options.style=0] 内置预设类型，使用Fx.Styles中的值
+     * @param {Function} [options.onStop] 动画结束后的回调函数
+     */
+    constructor({
+        delay = 0,
+        begin = 0,
+        end = 100,
+        x_start,
+        x_end,
+        time = 1,
+        fx,
+        func,
+        fps = 60,
+        enable = true,
+        style = 0,
+        onStop
+    } = {}) {
+        this.begin = begin;
+        this.end = end;
+        this.fps = fps;
+        this.time = time;
+        this.per_clock = 1000 / fps;
+        this.delay = delay;
+        this.func = func;
+        this.onStop = onStop;
+        this.enable = enable;
+        this.timer = null;
+
+        if (fx) {
+            // 使用自定义函数
+            this.x_start = x_start != null ? x_start * 1.0 : 0;
+            this.x_end = x_end != null ? x_end * 1.0 : 1;
+            this.fx = fx;
+            this.speed = (this.x_end - this.x_start) / (time * fps);
+        } else {
+            // 使用预设样式
+            const styleName = this._getStyleName(style);
+            this.fx = (x) => Fx.Easing[styleName](x, begin, end, fps * time);
+            this.x_start = 0;
+            this.x_end = fps * time;
+            this.speed = 1;
+        }
+
+        this.x_now = this.x_start;
+        
+        if (enable) {
+            this.registerTimer();
+        }
     }
-    this.per_clock = 1000 / fps;
-    this.delay = delay;
-    this.func = func;
-    this.x_now = this.x_start;
-    this.onStop = onStop;
-    this._enable = enable | false;
-    this._timer = null;
-    this._outTimer = outTimer | false;
-    this._useSmoothTimer = useSmoothTimer | false;
-    this.setEnable(this._enable);
-  }
-  restart() {
-    this.x_now = this.x_start;
-    this.setEnable(false);
-    this.setEnable(true);
-  }
-  setEnable(enable) {
-    this._enable = enable;
-    if (enable) {
-      if (!this._outTimer) {
+
+    /**
+     * 获取样式名称
+     * @param {number} styleValue 样式枚举值
+     * @returns {string} 样式名称
+     * @private
+     */
+    _getStyleName(styleValue) {
+        for (const key in Fx.Styles) {
+            if (Fx.Styles[key] === styleValue) {
+                return key;
+            }
+        }
+        return "LINEAR";
+    }
+
+    /**
+     * 重新开始动画
+     */
+    restart() {
+        this.x_now = this.x_start;
+        if (this.timer) {
+            this.timer.stop();
+            this.timer = null;
+        }
         this.registerTimer();
-      }
-    } else {
-      if (this._timer) {
-        timer.stopTimer(this._timer);
-        this._timer = null;
-      }
     }
-  }
-  step() {
-    if (this._outTimer) {
-      if (this._enable) {
-        this.func(this.fx((this.x_now += this.speed)));
-        if (this.x_now > this.x_end) {
-          //防止不到终点
-          this.func(this.fx(this.x_end));
-          //执行onStop
-          if (this.onStop != undefined) {
-            this.onStop();
-          }
-          this._enable = false;
+
+    /**
+     * 设置动画是否启用
+     * @param {boolean} enable 是否启用
+     */
+    setEnable(enable) {
+        if (this.enable === enable) return;
+        
+        this.enable = enable;
+        if (enable) {
+            this.registerTimer();
+        } else if (this.timer) {
+            this.timer.stop();
+            this.timer = null;
         }
-      }
     }
-  }
-  registerTimer() {
-    let callback = (option) => {
-      this.func(this.fx((this.x_now += this.speed)));
-      if (this.x_now > this.x_end) {
-        //防止不到终点
-        this.func(this.fx(this.x_end));
-        //执行onStop
-        if (this.onStop != undefined) {
-          this.onStop();
+
+    /**
+     * 注册定时器
+     * @private
+     */
+    registerTimer() {
+        if (this.timer) {
+            this.timer.stop();
         }
-        //停止timer
-        this._useSmoothTimer
-          ? stopSmoothTimer(this._timer)
-          : timer.stopTimer(this._timer);
-        this._timer = null;
-        this._enable = false;
-      }
-    };
-    this._timer = this._useSmoothTimer
-      ? createSmoothTimer(
-          this.delay ? this.delay : 0,
-          this.per_clock,
-          callback,
-          {},
-          SmoothTimer.modes.DYNAMIC_SMOOTH
-        )
-      : timer.createTimer(
-          this.delay ? this.delay : 0,
-          this.per_clock,
-          callback,
-          {}
-        );
-  }
-  /**
-   * 获取两个颜色的混合色
-   * @param {number} color1 颜色1 比如 0x000000
-   * @param {number} color2 颜色2 比如 0xFFFFFF
-   * @param {number} percentage 混合百分比 取值[0,1] 若取0则为color1 取1则为color2
-   * @returns {number} 混合后的颜色
-   */
-  static getMixColor(color1, color2, percentage) {
-    let r0 = color1 & 0xff0000,
-      g0 = color1 & 0x00ff00,
-      b0 = color1 & 0x0000ff;
-    let r1 = color2 & 0xff0000,
-      g1 = color2 & 0x00ff00,
-      b1 = color2 & 0x0000ff;
-    return (
-      (Math.floor((r1 - r0) * percentage + r0) & 0xff0000) +
-      (Math.floor((g1 - g0) * percentage + g0) & 0x00ff00) +
-      (Math.floor((b1 - b0) * percentage + b0) & 0x0000ff)
-    );
-  }
-  /**
-   * 获取两个边框(x,y,w,h)的混合值
-   * @param {{x?:number, y?:number, w?:number, h?:number, radius?:number}} border1 边框1 不一定需要给四个参数
-   * @param {{x?:number, y?:number, w?:number, h?:number, radius?:number}} border2 边框2 不一定需要给四个参数
-   * @param {number} percentage 混合百分比 取值[0,1] 若取0则为border1 取1则为border2
-   * @returns {x?:number, y?:number, w?:number, h?:number} 混合后的边框
-   */
-  static getMixBorder(border1, border2, percentage) {
-    return {
-      x: border1.x + (border2.x - border1.x) * percentage,
-      y: border1.y + (border2.y - border1.y) * percentage,
-      w: border1.w + (border2.w - border1.w) * percentage,
-      h: border1.h + (border2.h - border1.h) * percentage,
-      radius: border1.radius + (border2.radius - border1.radius) * percentage,
-    };
-  }
+        
+        this.timer = new ZeppTimer(() => {
+            // 更新位置
+            this.x_now += this.speed;
+            
+            // 检查是否完成
+            if (this.x_now >= this.x_end) {
+                this.x_now = this.x_end;
+                this.func(this.fx(this.x_end));
+                
+                if (typeof this.onStop === 'function') {
+                    this.onStop();
+                }
+                
+                this.timer.stop();
+                this.timer = null;
+                this.enable = false;
+                return;
+            }
+            
+            // 执行动画回调
+            this.func(this.fx(this.x_now));
+        }, this.per_clock);
+        
+        this.timer.start();
+    }
+    
+    /**
+     * 获取两个颜色的混合色
+     * @param {number} color1 初始颜色1 (6位十六进制)
+     * @param {number} color2 初始颜色2 (6位十六进制)
+     * @param {number} percentage 混合百分比 [0,1]，越小越接近color1
+     * @returns {number} 混合后的颜色
+     */
+    static getMixColor(color1, color2, percentage) {
+        // 提取RGB分量
+        const r1 = (color1 >> 16) & 0xff;
+        const g1 = (color1 >> 8) & 0xff;
+        const b1 = color1 & 0xff;
+        
+        const r2 = (color2 >> 16) & 0xff;
+        const g2 = (color2 >> 8) & 0xff;
+        const b2 = color2 & 0xff;
+        
+        // 计算混合色
+        const r = Math.floor(r1 + (r2 - r1) * percentage);
+        const g = Math.floor(g1 + (g2 - g1) * percentage);
+        const b = Math.floor(b1 + (b2 - b1) * percentage);
+        
+        return (r << 16) | (g << 8) | b;
+    }
+    
+    /**
+     * 获取两个边框的混合值
+     * @param {{x?:number, y?:number, w?:number, h?:number, radius?:number}} border1 边框1
+     * @param {{x?:number, y?:number, w?:number, h?:number, radius?:number}} border2 边框2
+     * @param {number} percentage 混合百分比 [0,1]
+     * @returns {{x:number, y:number, w:number, h:number, radius:number}} 混合后的边框
+     */
+    static getMixBorder(border1, border2, percentage) {
+        return {
+            x: border1.x + (border2.x - border1.x) * percentage,
+            y: border1.y + (border2.y - border1.y) * percentage,
+            w: border1.w + (border2.w - border1.w) * percentage,
+            h: border1.h + (border2.h - border1.h) * percentage,
+            radius: border1.radius + (border2.radius - border1.radius) * percentage,
+        };
+    }
 }
+
+/**
+ * 动画样式预设常量
+ * @enum {number}
+ */
 Fx.Styles = {
-  LINEAR: 0,
-  EASE_IN_OUT_QUAD: 1,
-  EASE_IN_QUAD: 2,
-  EASE_OUT_QUAD: 3,
+    LINEAR: 0,
+    EASE_IN_SINE: 1,
+    EASE_OUT_SINE: 2,
+    EASE_IN_OUT_SINE: 3,
+    EASE_IN_QUAD: 4,
+    EASE_OUT_QUAD: 5,
+    EASE_IN_OUT_QUAD: 6,
+    EASE_IN_CUBIC: 7,
+    EASE_OUT_CUBIC: 8,
+    EASE_IN_OUT_CUBIC: 9,
+    EASE_IN_QUART: 10,
+    EASE_OUT_QUART: 11,
+    EASE_IN_OUT_QUART: 12,
+    EASE_IN_QUINT: 13,
+    EASE_OUT_QUINT: 14,
+    EASE_IN_OUT_QUINT: 15,
+    EASE_IN_EXPO: 16,
+    EASE_OUT_EXPO: 17,
+    EASE_IN_OUT_EXPO: 18,
+    EASE_IN_CIRC: 19,
+    EASE_OUT_CIRC: 20,
+    EASE_IN_OUT_CIRC: 21,
+    EASE_IN_BACK: 22,
+    EASE_OUT_BACK: 23,
+    EASE_IN_OUT_BACK: 24,
+    EASE_IN_ELASTIC: 25,
+    EASE_OUT_ELASTIC: 26,
+    EASE_IN_OUT_ELASTIC: 27,
+    EASE_IN_BOUNCE: 28,
+    EASE_OUT_BOUNCE: 29,
+    EASE_IN_OUT_BOUNCE: 31,
 };
-const fx_inside = {
-  // 线性
-  LINEAR: function (now_x, begin, end, max_x) {
-    return ((end - begin) / max_x) * now_x + begin;
-  },
-  // 二次平滑 进入与出去
-  EASE_IN_OUT_QUAD: function (now_x, begin, end, max_x) {
-    let length = end - begin;
-    if ((now_x /= max_x / 2) < 1) {
-      // 未过半
-      return (length / 2) * now_x * now_x + begin; //
-    } else {
-      // 过半
-      return (-length / 2) * (--now_x * (now_x - 2) - 1) + begin;
+
+/**
+ * 缓动函数集合
+ * @see https://easings.net/
+ */
+Fx.Easing = {
+    LINEAR: function (now_x, begin, end, max_x) {
+        const x = now_x / max_x;
+        return begin + (end - begin) * x;
+    },
+    
+    EASE_IN_SINE: function (now_x, begin, end, max_x) {
+        const x = now_x / max_x;
+        return begin + (end - begin) * (1 - Math.cos((x * Math.PI) / 2));
+    },
+    
+    EASE_OUT_SINE: function (now_x, begin, end, max_x) {
+        const x = now_x / max_x;
+        return begin + (end - begin) * Math.sin((x * Math.PI) / 2);
+    },
+    
+    EASE_IN_OUT_SINE: function (now_x, begin, end, max_x) {
+        const x = now_x / max_x;
+        return begin + (end - begin) * (-(Math.cos(Math.PI * x) - 1) / 2);
+    },
+    
+    EASE_IN_QUAD: function (now_x, begin, end, max_x) {
+        const x = now_x / max_x;
+        return begin + (end - begin) * (x * x);
+    },
+    
+    EASE_OUT_QUAD: function (now_x, begin, end, max_x) {
+        const x = now_x / max_x;
+        return begin + (end - begin) * (1 - (1 - x) * (1 - x));
+    },
+    
+    EASE_IN_OUT_QUAD: function (now_x, begin, end, max_x) {
+        const x = now_x / max_x;
+        return begin + (end - begin) * (x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2);
+    },
+    
+    EASE_IN_CUBIC: function (now_x, begin, end, max_x) {
+        const x = now_x / max_x;
+        return begin + (end - begin) * (x * x * x);
+    },
+    
+    EASE_OUT_CUBIC: function (now_x, begin, end, max_x) {
+        const x = now_x / max_x;
+        return begin + (end - begin) * (1 - Math.pow(1 - x, 3));
+    },
+    
+    EASE_IN_OUT_CUBIC: function (now_x, begin, end, max_x) {
+        const x = now_x / max_x;
+        return begin + (end - begin) * (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
+    },
+    
+    EASE_IN_QUART: function (now_x, begin, end, max_x) {
+        const x = now_x / max_x;
+        return begin + (end - begin) * (x * x * x * x);
+    },
+    
+    EASE_OUT_QUART: function (now_x, begin, end, max_x) {
+        const x = now_x / max_x;
+        return begin + (end - begin) * (1 - Math.pow(1 - x, 4));
+    },
+    
+    EASE_IN_OUT_QUART: function (now_x, begin, end, max_x) {
+        const x = now_x / max_x;
+        return begin + (end - begin) * (x < 0.5 ? 8 * x * x * x * x : 1 - Math.pow(-2 * x + 2, 4) / 2);
+    },
+    
+    EASE_IN_QUINT: function (now_x, begin, end, max_x) {
+        const x = now_x / max_x;
+        return begin + (end - begin) * (x * x * x * x * x);
+    },
+    
+    EASE_OUT_QUINT: function (now_x, begin, end, max_x) {
+        const x = now_x / max_x;
+        return begin + (end - begin) * (1 - Math.pow(1 - x, 5));
+    },
+    
+    EASE_IN_OUT_QUINT: function (now_x, begin, end, max_x) {
+        const x = now_x / max_x;
+        return begin + (end - begin) * (x < 0.5 ? 16 * x * x * x * x * x : 1 - Math.pow(-2 * x + 2, 5) / 2);
+    },
+    
+    EASE_IN_EXPO: function (now_x, begin, end, max_x) {
+        const x = now_x / max_x;
+        return begin + (end - begin) * (x === 0 ? 0 : Math.pow(2, 10 * x - 10));
+    },
+    
+    EASE_OUT_EXPO: function (now_x, begin, end, max_x) {
+        const x = now_x / max_x;
+        return begin + (end - begin) * (x === 1 ? 1 : 1 - Math.pow(2, -10 * x));
+    },
+    
+    EASE_IN_OUT_EXPO: function (now_x, begin, end, max_x) {
+        const x = now_x / max_x;
+        return begin + (end - begin) * (
+            x === 0 ? 0 : 
+            x === 1 ? 1 : 
+            x < 0.5 ? Math.pow(2, 20 * x - 10) / 2 : 
+            (2 - Math.pow(2, -20 * x + 10)) / 2
+        );
+    },
+    
+    EASE_IN_CIRC: function (now_x, begin, end, max_x) {
+        const x = now_x / max_x;
+        return begin + (end - begin) * (1 - Math.sqrt(1 - Math.pow(x, 2)));
+    },
+    
+    EASE_OUT_CIRC: function (now_x, begin, end, max_x) {
+        const x = now_x / max_x;
+        return begin + (end - begin) * Math.sqrt(1 - Math.pow(x - 1, 2));
+    },
+    
+    EASE_IN_OUT_CIRC: function (now_x, begin, end, max_x) {
+        const x = now_x / max_x;
+        return begin + (end - begin) * (
+            x < 0.5 ? 
+            (1 - Math.sqrt(1 - Math.pow(2 * x, 2))) / 2 : 
+            (Math.sqrt(1 - Math.pow(-2 * x + 2, 2)) + 1) / 2
+        );
+    },
+    
+    EASE_IN_BACK: function (now_x, begin, end, max_x) {
+        const x = now_x / max_x;
+        const c1 = 1.70158;
+        return begin + (end - begin) * (c1 * x * x * x - c1 * x * x);
+    },
+    
+    EASE_OUT_BACK: function (now_x, begin, end, max_x) {
+        const x = now_x / max_x;
+        const c1 = 1.70158;
+        return begin + (end - begin) * (1 + c1 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2));
+    },
+    
+    EASE_IN_OUT_BACK: function (now_x, begin, end, max_x) {
+        const x = now_x / max_x;
+        const c1 = 1.70158;
+        const c2 = c1 * 1.525;
+        
+        return begin + (end - begin) * (
+            x < 0.5 ?
+            (Math.pow(2 * x, 2) * ((c2 + 1) * 2 * x - c2)) / 2 :
+            (Math.pow(2 * x - 2, 2) * ((c2 + 1) * (x * 2 - 2) + c2) + 2) / 2
+        );
+    },
+    
+    EASE_IN_ELASTIC: function (now_x, begin, end, max_x) {
+        const x = now_x / max_x;
+        const c4 = (2 * Math.PI) / 3;
+        
+        return begin + (end - begin) * (
+            x === 0 ? 0 :
+            x === 1 ? 1 :
+            -Math.pow(2, 10 * x - 10) * Math.sin((x * 10 - 10.75) * c4)
+        );
+    },
+    
+    EASE_OUT_ELASTIC: function (now_x, begin, end, max_x) {
+        const x = now_x / max_x;
+        const c4 = (2 * Math.PI) / 3;
+        
+        return begin + (end - begin) * (
+            x === 0 ? 0 :
+            x === 1 ? 1 :
+            Math.pow(2, -10 * x) * Math.sin((x * 10 - 0.75) * c4) + 1
+        );
+    },
+    
+    EASE_IN_OUT_ELASTIC: function (now_x, begin, end, max_x) {
+        const x = now_x / max_x;
+        const c5 = (2 * Math.PI) / 4.5;
+        
+        return begin + (end - begin) * (
+            x === 0 ? 0 :
+            x === 1 ? 1 :
+            x < 0.5 ?
+            -(Math.pow(2, 20 * x - 10) * Math.sin((20 * x - 11.125) * c5)) / 2 :
+            (Math.pow(2, -20 * x + 10) * Math.sin((20 * x - 11.125) * c5)) / 2 + 1
+        );
+    },
+    
+    EASE_IN_BOUNCE: function (now_x, begin, end, max_x) {
+        const x = now_x / max_x;
+        return begin + (end - begin) * (1 - bounceOut(1 - x));
+    },
+    
+    EASE_OUT_BOUNCE: function (now_x, begin, end, max_x) {
+        const x = now_x / max_x;
+        return begin + (end - begin) * bounceOut(x);
+    },
+    
+    EASE_IN_OUT_BOUNCE: function (now_x, begin, end, max_x) {
+        const x = now_x / max_x;
+        return begin + (end - begin) * (
+            x < 0.5 ?
+            (1 - bounceOut(1 - 2 * x)) / 2 :
+            (1 + bounceOut(2 * x - 1)) / 2
+        );
+    },
+};
+
+/**
+ * zeppos-timer.js
+ * @description An accurate timer for ZeppOS. 一个适用于ZeppOS的准确的计时器
+ * @version 1.0.0
+ * @date 2023/04/07
+ * @author XiaomaiTX
+ * @license MIT
+ * https://github.com/XiaomaiTX/zeppos-timer
+ *
+ * */
+import { Time } from "@zos/sensor";
+
+class ZeppTimer {
+    constructor(callback, interval) {
+        this.callback = callback;
+        this.interval = interval;
+        this.timerId = null;
+        this.startTime = null;
+        this.nextTick = null;
+        this.time = new Time();
+        this.stopped = false
     }
-  },
-  // 二次平滑 进入
-  EASE_IN_QUAD: function (now_x, begin, end, max_x) {
-    return (
-      ((begin - end) / (max_x * max_x)) * (max_x - now_x) * (max_x - now_x) +
-      end
-    );
-  },
-  // 二次平滑 出去
-  EASE_OUT_QUAD: function (now_x, begin, end, max_x) {
-    return ((end - begin) / (max_x * max_x)) * now_x * now_x + begin;
-  },
-};
+
+    start(delay = 0) {
+        this.startTime = this.time.getTime() + delay;
+        this.nextTick = this.startTime + this.interval;
+        this.scheduleTick();
+    }
+
+    stop() {
+        this.stopped = true
+        this.timerId && clearTimeout(this.timerId);
+    }
+
+    scheduleTick() {
+        if(this.stopped) return;
+        const currentTime = this.time.getTime();
+        const delay = Math.max(0, this.nextTick - currentTime);
+        this.timerId = setTimeout(() => {
+            this.tick();
+        }, delay);
+    }
+
+    tick() {
+        const currentTime = this.time.getTime();
+
+        // 计算误差，确保计时器的准确性
+        const error = currentTime - this.nextTick;
+
+        if (error > this.interval) {
+            // 如果误差大于一个间隔时间，则将 nextTick 更新为当前时间
+            this.nextTick = currentTime;
+        } else {
+            // 否则将 nextTick 加上一个间隔时间
+            this.nextTick += this.interval;
+        }
+
+        // 调用回调函数
+        this.callback();
+
+        // 继续调度下一个 tick
+        this.scheduleTick();
+    }
+}
