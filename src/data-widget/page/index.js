@@ -10,7 +10,7 @@ Page({
       text: "",
       title: "输入法"
     })
-    // inputMethod.start()
+    inputMethod.start()
   },
   onInit() {
   },

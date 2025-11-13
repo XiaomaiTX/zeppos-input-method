@@ -6,16 +6,16 @@
 import * as hmUI from "@zos/ui";
 console.log("inputMethod.js")
 
-// import { InputBoxLib } from "./inputboxLib";
-// import { KeyBoardLib } from "./keyboardLib";
-// import {
-//     KEYBOARD_TYPE,
-//     INPUTBOX_TYPE,
-//     BOUNDARY_Y,
-//     LINK_EVENT_TYPE,
-// } from "./styles";
-// const app = getApp()
-// const globalData = app._options.globalData;
+import { InputBoxLib } from "./inputboxLib";
+import { KeyBoardLib } from "./keyboardLib";
+import {
+    KEYBOARD_TYPE,
+    INPUTBOX_TYPE,
+    BOUNDARY_Y,
+    LINK_EVENT_TYPE,
+} from "./styles";
+const app = getApp()
+const globalData = app._options.globalData;
 
 
 // InputMethod 输入法类
@@ -32,60 +32,60 @@ export class InputMethod {
             console.debug("keyboard.js: ERROR empty keyboard_list");
             return;
         }
-        // this.singleKeyboard = this.keyboard_list.length == 1;
-        // this.nowKeyboardType = this.keyboard_list[0];
-        // if (this.nowKeyboardType >= KeyBoardLib.length) {
-        //     console.debug("keyboard.js: ERROR keyboard_type overflow");
-        //     return;
-        // }
-        // this.keyboard = new KeyBoardLib[this.nowKeyboardType]({
-        //     singleKeyboard: this.singleKeyboard,
-        //     father: this,
-        // });
-        // this.inputboxType = inputbox_type;
-        // if (this.inputboxType >= InputBoxLib.length) {
-        //     console.debug("keyboard.js: ERROR inputbox_type overflow");
-        //     return;
-        // }
-        // this.inputbox = new InputBoxLib[inputbox_type]({
-        //     father: this,
-        //     text,
-        //     title,
-        // });
-        // this.controlPlane = null;
-        // this.controlCallBack = [
-        //     (info) => {
-        //         /* console.debug("callback:CD"); */ this.touch(
-        //             hmUI.event.CLICK_DOWN,
-        //             info
-        //         );
-        //     },
-        //     (info) => {
-        //         /* console.debug("callback:CI"); */ this.touch(
-        //             hmUI.event.CLICK_UP,
-        //             info
-        //         );
-        //     },
-        //     (info) => {
-        //         /* console.debug("callbackM:"); */ this.touch(
-        //             hmUI.event.MOVE,
-        //             info
-        //         );
-        //     },
-        //     (info) => {
-        //         /* console.debug("callbackMI:"); */ this.touch(
-        //             hmUI.event.MOVE_IN,
-        //             info
-        //         );
-        //     },
-        //     (info) => {
-        //         /* console.debug("callbackMO:"); */ this.touch(
-        //             hmUI.event.MOVE_OUT,
-        //             info
-        //         );
-        //     },
-        // ];
-        // this.controlLastY = 0;
+        this.singleKeyboard = this.keyboard_list.length == 1;
+        this.nowKeyboardType = this.keyboard_list[0];
+        if (this.nowKeyboardType >= KeyBoardLib.length) {
+            console.debug("keyboard.js: ERROR keyboard_type overflow");
+            return;
+        }
+        this.keyboard = new KeyBoardLib[this.nowKeyboardType]({
+            singleKeyboard: this.singleKeyboard,
+            father: this,
+        });
+        this.inputboxType = inputbox_type;
+        if (this.inputboxType >= InputBoxLib.length) {
+            console.debug("keyboard.js: ERROR inputbox_type overflow");
+            return;
+        }
+        this.inputbox = new InputBoxLib[inputbox_type]({
+            father: this,
+            text,
+            title,
+        });
+        this.controlPlane = null;
+        this.controlCallBack = [
+            (info) => {
+                /* console.debug("callback:CD"); */ this.touch(
+                    hmUI.event.CLICK_DOWN,
+                    info
+                );
+            },
+            (info) => {
+                /* console.debug("callback:CI"); */ this.touch(
+                    hmUI.event.CLICK_UP,
+                    info
+                );
+            },
+            (info) => {
+                /* console.debug("callbackM:"); */ this.touch(
+                    hmUI.event.MOVE,
+                    info
+                );
+            },
+            (info) => {
+                /* console.debug("callbackMI:"); */ this.touch(
+                    hmUI.event.MOVE_IN,
+                    info
+                );
+            },
+            (info) => {
+                /* console.debug("callbackMO:"); */ this.touch(
+                    hmUI.event.MOVE_OUT,
+                    info
+                );
+            },
+        ];
+        this.controlLastY = 0;
     }
     start() {
         this.inputbox.onCreate();

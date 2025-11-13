@@ -1,5 +1,5 @@
-// import * as hmUI from "@zos/ui";
-// var ball = null;
+import * as hmUI from "@zos/ui";
+var ball = null;
 
 export function click() {
     // vibrate.stop();
@@ -17,8 +17,7 @@ export function click() {
     // } else {
     //     ball.setProperty(hmUI.prop.COLOR, 0xff0000);
     // }
-    // let _ = timer.createTimer(50, 2147483648, (option) => {
+    // setTimeout(() => {
     //     ball.setProperty(hmUI.prop.COLOR, 0x000000);
-    //     timer.stopTimer(_);
-    // });
+    // }, 50);
 }

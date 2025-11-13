@@ -4,6 +4,7 @@
 // onDelete()
 
 // import { dataManager } from "./dataManager";
+import * as hmUI from "@zos/ui";
 import { Fx } from "../fx";
 import { click } from "./method";
 import { LINK_EVENT_TYPE,InputboxCondition } from "./styles";
@@ -23,38 +24,33 @@ class Cursor {
         this.flashShowing = true;
         this.offsetX = -2; //为了防止字符与光标重叠的偏移
     }
-    setFlash(enable) {
-        // 闪烁
-        if (enable) {
-            if (!this.flashTimer) {
-                this.flashTimer = this.flashTimer = timer.createTimer(
-                    150,
-                    350,
-                    (option) => {
-                        if (this.flashShowing) {
-                            this.widget.setProperty(
-                                hmUI.prop.VISIBLE,
-                                (this.flashShowing = false)
-                            );
-                        } else {
-                            this.widget.setProperty(
-                                hmUI.prop.VISIBLE,
-                                (this.flashShowing = true)
-                            );
-                        }
-                    },
-                    {}
-                );
-            }
-        } else {
-            // if enable
-            if (this.flashTimer) {
-                timer.stopTimer(this.flashTimer);
-                this.flashTimer = null;
-            }
-            this.widget.setProperty(hmUI.prop.VISIBLE, true);
+setFlash(enable) {
+    if (enable) {
+        if (!this.flashTimer) {
+            // 启动闪烁
+            const startFlashing = () => {
+                // 切换显示状态
+                this.flashShowing = !this.flashShowing;
+                this.widget.setProperty(hmUI.prop.VISIBLE, this.flashShowing);
+                
+                // 继续下一次闪烁
+                this.flashTimer = setTimeout(startFlashing, 350);
+            };
+            
+            // 初始延迟
+            this.flashTimer = setTimeout(startFlashing, 150);
         }
+    } else {
+        // 停止闪烁
+        if (this.flashTimer) {
+            clearTimeout(this.flashTimer);
+            this.flashTimer = null;
+        }
+        // 恢复显示
+        this.widget.setProperty(hmUI.prop.VISIBLE, true);
+        this.flashShowing = true;
     }
+}
     onCreate() {
         this.widget = hmUI.createWidget(hmUI.widget.FILL_RECT, {
             x: this.border.x + this.locX + this.offsetX,
