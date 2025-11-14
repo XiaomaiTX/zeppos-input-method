@@ -12,6 +12,12 @@ export const KEYBOARD_TYPE = {
     NUM: 1, // 数字键盘
     ZH_CN_PY: 2, // 中文拼音键盘
 };
+// export const KeyboardType = {
+//     ENGLISH: "en",
+//     CHINESE_PINYIN: "zh_cn_py",
+//     NUMBER: "num", 
+//     SYMBOL: "symbol"
+// };
 
 // 输入框类型
 export const INPUTBOX_TYPE = {

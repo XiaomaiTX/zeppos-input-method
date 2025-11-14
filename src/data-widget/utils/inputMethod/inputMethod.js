@@ -21,21 +21,21 @@ const globalData = app._options.globalData;
 // InputMethod 输入法类
 // 包含一个InputBox实例和一个Keyboard可选列表，通过一个control面板将触控事件分发给两个实例
 export class InputMethod {
-    constructor({ keyboard_list, inputbox_type, max_byte, text, title }) {
+    constructor({ keyboard_type, inputbox_type, text, title }) {
         console.log("InputMethod constructor")
-        if (keyboard_list == undefined) {
-            this.keyboard_list = [0, 1, 2];
+        if (keyboard_type == undefined) {
+            this.keyboard_type = [0, 1, 2];
         } else {
-            this.keyboard_list = keyboard_list;
+            this.keyboard_type = keyboard_type;
         }
-        if (!this.keyboard_list.length) {
-            console.debug("keyboard.js: ERROR empty keyboard_list");
+        if (!this.keyboard_type.length) {
+            console.log("keyboard.js: ERROR empty keyboard_type");
             return;
         }
-        this.singleKeyboard = this.keyboard_list.length == 1;
-        this.nowKeyboardType = this.keyboard_list[0];
+        this.singleKeyboard = this.keyboard_type.length == 1;
+        this.nowKeyboardType = this.keyboard_type[0];
         if (this.nowKeyboardType >= KeyBoardLib.length) {
-            console.debug("keyboard.js: ERROR keyboard_type overflow");
+            console.log("keyboard.js: ERROR keyboard_type overflow");
             return;
         }
         this.keyboard = new KeyBoardLib[this.nowKeyboardType]({
@@ -44,7 +44,7 @@ export class InputMethod {
         });
         this.inputboxType = inputbox_type;
         if (this.inputboxType >= InputBoxLib.length) {
-            console.debug("keyboard.js: ERROR inputbox_type overflow");
+            console.log("keyboard.js: ERROR inputbox_type overflow");
             return;
         }
         this.inputbox = new InputBoxLib[inputbox_type]({
@@ -55,31 +55,31 @@ export class InputMethod {
         this.controlPlane = null;
         this.controlCallBack = [
             (info) => {
-                /* console.debug("callback:CD"); */ this.touch(
+                /* console.log("callback:CD"); */ this.touch(
                     hmUI.event.CLICK_DOWN,
                     info
                 );
             },
             (info) => {
-                /* console.debug("callback:CI"); */ this.touch(
+                /* console.log("callback:CI"); */ this.touch(
                     hmUI.event.CLICK_UP,
                     info
                 );
             },
             (info) => {
-                /* console.debug("callbackM:"); */ this.touch(
+                /* console.log("callbackM:"); */ this.touch(
                     hmUI.event.MOVE,
                     info
                 );
             },
             (info) => {
-                /* console.debug("callbackMI:"); */ this.touch(
+                /* console.log("callbackMI:"); */ this.touch(
                     hmUI.event.MOVE_IN,
                     info
                 );
             },
             (info) => {
-                /* console.debug("callbackMO:"); */ this.touch(
+                /* console.log("callbackMO:"); */ this.touch(
                     hmUI.event.MOVE_OUT,
                     info
                 );
@@ -90,16 +90,6 @@ export class InputMethod {
     start() {
         this.inputbox.onCreate();
         this.keyboard.onCreate();
-        // hmUI.createWidget(hmUI.widget.ARC, {
-        //   x: 0,
-        //   y: 0,
-        //   w: px(480),
-        //   h: px(480),
-        //   start_angle: 0,
-        //   end_angle: 359,
-        //   line_width: 2,
-        //   color: 0xffffff
-        // })
         hmUI.createWidget(hmUI.widget.IMG, {
             x: 0,
             y: 0,
@@ -136,7 +126,6 @@ export class InputMethod {
         ); // TODO 可能不存在这种事件
     }
     touch(event, info) {
-        //console.debug('callback:', JSON.stringify(info))
         let res = null; // inputbox和keyboard通信用的临时变量，保存cuber::event数据包
         if (info.y < BOUNDARY_Y) {
             // inputbox
@@ -155,7 +144,7 @@ export class InputMethod {
             res = this.keyboard.onTouch(event, info);
             res && this.inputbox.link(res);
         }
-        // console.debug('onTouch() return:', JSON.stringify(res))
+        // console.log('onTouch() return:', JSON.stringify(res))
         if (res && res.type == LINK_EVENT_TYPE.FINISH) {
             this.finish();
         }
@@ -194,7 +183,6 @@ export class InputMethod {
         }
     }
     delete() {
-        // vibrate.stop();
     }
     getText() {
         return this.inputbox.text;

@@ -6,7 +6,6 @@
 // import { dataManager } from "./dataManager";
 import * as hmUI from "@zos/ui";
 import { Fx } from "../fx";
-import { click } from "./method";
 import { LINK_EVENT_TYPE,InputboxCondition } from "./styles";
 
 
@@ -241,7 +240,7 @@ class TextLine {
             w: this.border.w + this.offsetBegin + this.offsetEnd,
             text: this.textShow,
         });
-        // console.debug("setLocX:" + JSON.stringify({ textShow: this.textShow, offsetBegin: this.offsetBegin, offsetEnd: this.offsetEnd, charBegin: this.charBegin, charEnd: this.charEnd, textLength: this.textLength }))
+        // console.log("setLocX:" + JSON.stringify({ textShow: this.textShow, offsetBegin: this.offsetBegin, offsetEnd: this.offsetEnd, charBegin: this.charBegin, charEnd: this.charEnd, textLength: this.textLength }))
     }
 }
 
@@ -338,7 +337,7 @@ export const InputBoxLib = [
             });
         }
         onTouch(event, info) {
-            // console.debug("onTouch() condition(before):" + this.condition)
+            // console.log("onTouch() condition(before):" + this.condition)
             switch (event) {
                 case hmUI.event.CLICK_DOWN:
                     if (
@@ -355,7 +354,7 @@ export const InputBoxLib = [
                         }
                         this.lastTouch = { x: info.x, y: info.y };
                     } else {
-                        console.debug("click Finish");
+                        console.log("click Finish");
                         new Fx({
                             begin: 0,
                             end: 1,
@@ -373,7 +372,6 @@ export const InputBoxLib = [
                                     )
                                 ),
                             onStop: () => {
-                                click();
                                 new Fx({
                                     begin: 0,
                                     end: 1,
@@ -409,7 +407,7 @@ export const InputBoxLib = [
                         this.charAt = this.textLine.getIndexFromOffsetX(
                             info.x - this.border.x
                         );
-                        // console.debug("charAt"+this.charAt)
+                        // console.log("charAt"+this.charAt)
                         this.cursor.move(
                             this.textLine.getOffsetXFromIndex(this.charAt),
                             true
@@ -435,11 +433,11 @@ export const InputBoxLib = [
                     }
                     break;
             }
-            // console.debug("onTouch() condition(end):" + this.condition)
-            // console.debug("this.condition & InputboxCondition.MOVE="+(this.condition & InputboxCondition.MOVE))
+            // console.log("onTouch() condition(end):" + this.condition)
+            // console.log("this.condition & InputboxCondition.MOVE="+(this.condition & InputboxCondition.MOVE))
         }
         link(res) {
-            // console.debug("inputBox.link: package" + JSON.stringify(res))
+            // console.log("inputBox.link: package" + JSON.stringify(res))
             switch (res.event) {
                 case LINK_EVENT_TYPE.INPUT: // 输入
                     this.text =
@@ -455,7 +453,7 @@ export const InputBoxLib = [
                             this.text.substring(this.charAt, this.text.length);
                         --this.charAt;
                     } else {
-                        console.debug("inputBox: text is empty");
+                        console.log("inputBox: text is empty");
                     }
                     break;
                 case LINK_EVENT_TYPE.CHANGE: // 改变
@@ -465,7 +463,7 @@ export const InputBoxLib = [
                             res.data +
                             this.text.substring(this.charAt, this.text.length);
                     } else {
-                        console.debug("inputBox: text is empty");
+                        console.log("inputBox: text is empty");
                     }
             }
             this.textLine.setText(this.text);

@@ -2,7 +2,7 @@
     "configVersion": "v3",
     "app": {
         "appId": 20306,
-        "appName": "ZeppOS Input Method",
+        "appName": "ZeppOS InputMethod",
         "appType": "app",
         "version": {
             "code": 1,
@@ -23,6 +23,24 @@
     "targets": {
         "default": {
             "module": {
+                "data-widget": {
+                    "widgets": [
+                        {
+                            "name": "InputMethod",
+                            "path": "data-widget/index",
+                            "icon": "icon.png",
+                            "runtime": {
+                                "ability": [
+                                    {
+                                        "name": "en-US",
+                                        "type": 2,
+                                        "subType": []
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
                 "page": {
                     "pages": ["page/index"]
                 },

@@ -12,9 +12,7 @@ import {
     KeyBoardCondition,
     QWERT_Layout,
 } from "./styles";
-import { click } from "./method";
 import { Fx } from "../fx";
-// import { dataManager } from "./dataManager";
 import * as hmUI from "@zos/ui";
 
 import { pinyin_dict_notone } from "./pinyin_dict_notone";
@@ -194,8 +192,6 @@ class BaseKeyboard {
         } else {
             // 按键
             if (this.lastButton.index < 26) {
-                click();
-
                 this.father.link(true, {
                     event: LINK_EVENT_TYPE.CHANGE,
                     data: QWERT_Layout.NumberAndSymbol[this.lastButton.index],
@@ -208,17 +204,16 @@ class BaseKeyboard {
                     case 27:
                         break; // space
                     case 28: // delete
-                        console.debug("timer for delete! create");
+                        console.log("timer for delete! create");
 
                         // 延迟5ms后开始检测
                         this.longPressTimeoutID = setTimeout(() => {
                             if (!(this.condition & KeyBoardCondition.PRESS))
                                 return;
 
-                            console.debug("timer for delete! callback");
+                            console.log("timer for delete! callback");
 
                             // 立即执行第一次删除
-                            click();
                             this.father.link(true, {
                                 event: LINK_EVENT_TYPE.DELETE,
                                 data: 1,
@@ -227,7 +222,6 @@ class BaseKeyboard {
                             // 每隔180ms重复删除
                             const interval = setInterval(() => {
                                 if (this.condition & KeyBoardCondition.PRESS) {
-                                    click();
                                     this.father.link(true, {
                                         event: LINK_EVENT_TYPE.DELETE,
                                         data: 1,
@@ -245,75 +239,70 @@ class BaseKeyboard {
     onCreate() {
         // 新建功能栏
         this.functionBar = hmUI.createWidget(hmUI.widget.IMG, {
-                    x: px(0),
-                    y: px(400),
-                    w: px(480),
-                    h: px(480) - BOUNDARY_Y,
-                    pos_x: 0,
-                    pos_y: 0 - px(400),
-                    src: "image/functionBar_Earth.png",
-                });
-            new Fx({
-                begin: px(400) - FUNCTION_BAR_H,
-                end: BOUNDARY_Y,
-                fps: 60,
-                time: 0.2,
-                style: Fx.Styles.EASE_IN_QUAD,
-                enable: true,
-                func: (res) => {
-                    if ("img" == "img") {
-                        this.functionBar.setProperty(hmUI.prop.MORE, {
-                            y: res,
-                            pos_y: 0 - res,
-                        });
-                    } else if ("img" == "rect") {
-                        this.functionBar.setProperty(hmUI.prop.Y, res);
-                    }
-                },
-                onStop() {
-                    /* console.debug("functionBar onStop") */
-                },
-            });
+            x: px(0),
+            y: px(400),
+            w: px(480),
+            h: px(480) - BOUNDARY_Y,
+            pos_x: 0,
+            pos_y: 0 - px(400),
+            src: "image/functionBar_Earth.png",
+        });
+        new Fx({
+            begin: px(400) - FUNCTION_BAR_H,
+            end: BOUNDARY_Y,
+            fps: 60,
+            time: 0.2,
+            style: Fx.Styles.EASE_IN_QUAD,
+            enable: true,
+            func: (res) => {
+                this.functionBar.setProperty(hmUI.prop.MORE, {
+                        y: res,
+                        pos_y: 0 - res,
+                    });
+            },
+            onStop() {
+            },
+        });
         // 创建背景
         this.background = hmUI.createWidget(hmUI.widget.IMG, {
-                    x: px(0),
-                    y: px(400),
-                    w: px(480),
-                    h: px(480) - BOUNDARY_Y - FUNCTION_BAR_H,
-                    pos_x: 0,
-                    pos_y: 0 - px(400),
-                    src: "image/keyboard_bgd_Earth.png",
-                });
-            this.buttonImg = hmUI.createWidget(hmUI.widget.IMG, {
-                x: px(0),
-                y: px(400),
-                w: px(480),
-                h: px(240),
-                src: "image/keyboardEN_button_Earth.png",
-            });
-            new Fx({
-                begin: px(400),
-                end: BOUNDARY_Y + FUNCTION_BAR_H,
-                fps: 60,
-                time: 0.2,
-                style: Fx.Styles.EASE_IN_QUAD,
-                enable: true,
-                func: (res) => {
-                    if ("img" == "img") {
-                        this.background.setProperty(hmUI.prop.MORE, {
-                            y: res,
-                            pos_y: 0 - res,
-                        });
-                    } else if ("img" == "rect") {
-                        this.background.setProperty(hmUI.prop.Y, res);
-                    }
-                    this.buttonImg.setProperty(hmUI.prop.Y, res);
-                },
+            x: px(0),
+            y: px(400),
+            w: px(480),
+            h: px(480) - BOUNDARY_Y - FUNCTION_BAR_H,
+            pos_x: 0,
+            pos_y: 0 - px(400),
+            src: "image/keyboard_bgd_Earth.png",
+        });
+        this.buttonImg = hmUI.createWidget(hmUI.widget.IMG, {
+            x: px(0),
+            y: px(400),
+            w: px(480),
+            h: px(240),
+            src: "image/keyboardEN_button_Earth.png",
+        });
+        new Fx({
+            begin: px(400),
+            end: BOUNDARY_Y + FUNCTION_BAR_H,
+            fps: 60,
+            time: 0.2,
+            style: Fx.Styles.EASE_IN_QUAD,
+            enable: true,
+            func: (res) => {
+                if ("img" == "img") {
+                    this.background.setProperty(hmUI.prop.MORE, {
+                        y: res,
+                        pos_y: 0 - res,
+                    });
+                } else if ("img" == "rect") {
+                    this.background.setProperty(hmUI.prop.Y, res);
+                }
+                this.buttonImg.setProperty(hmUI.prop.Y, res);
+            },
 
-                onStop() {
-                    /* console.debug("background onStop") */
-                },
-            });
+            onStop() {
+                /* console.log("background onStop") */
+            },
+        });
 
         // 创建按钮遮罩
         this.pressMask.widget = hmUI.createWidget(hmUI.widget.STROKE_RECT, {
@@ -399,11 +388,10 @@ class BaseKeyboard {
                                 hmUI.prop.MORE,
                                 border
                             );
-                            click();
                             this.lastButton.isFuncBar = false;
                             this.lastButton.index = index;
 
-                            this.longPressTimeoutID=setTimeout(() => {
+                            this.longPressTimeoutID = setTimeout(() => {
                                 this.longPress();
                             }, 600);
                             this.chooseWord(
@@ -434,7 +422,7 @@ class BaseKeyboard {
                             this.lastButton.isFuncBar = false;
                             this.lastButton.index = index;
 
-                            this.longPressTimeoutID=setTimeout(() => {
+                            this.longPressTimeoutID = setTimeout(() => {
                                 this.longPress();
                             }, 300);
                             switch (index) {
@@ -459,11 +447,10 @@ class BaseKeyboard {
                     this.KeyBoardCondition = KeyBoardCondition.WAIT_WORD;
                     break;
                 case hmUI.event.CLICK_DOWN:
-                    click();
                     this.lastButton.isFuncBar = false;
                     this.lastButton.index = index;
 
-                    this.longPressTimeoutID=setTimeout(() => {
+                    this.longPressTimeoutID = setTimeout(() => {
                         this.longPress();
                     }, 300);
                     this.condition |= KeyBoardCondition.PRESS;
@@ -500,7 +487,6 @@ class BaseKeyboard {
                                 this.setCapsLock(!this.capsLock);
                                 break;
                             case 27: // space
-                                // if (this.condition && KeyBoardCondition.WAIT_WORD) this.chooseWord(0)
                                 // else
                                 return {
                                     event: LINK_EVENT_TYPE.INPUT,
@@ -621,8 +607,9 @@ export const KeyBoardLib = [
     class NUM {},
     class ZH_CN_PY extends BaseKeyboard {
         chooseWord(inputText) {
+            console.log("[chooseWord] inputText:", inputText);
             const currentInput = this.father.getText();
-            console.debug("[chooseWord] 当前输入框内容:", currentInput);
+            console.log("[chooseWord] 当前输入框内容:", currentInput);
             if (inputText === "DELETE") {
                 const updatedInput = currentInput.slice(0, -1);
 
