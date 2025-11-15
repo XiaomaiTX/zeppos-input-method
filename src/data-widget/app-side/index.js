@@ -1,13 +1,11 @@
-import { gettext } from 'i18n'
+import { gettext } from "i18n";
 
 AppSideService({
   onInit() {
-    console.log(gettext('example'))
+    console.log(gettext("example"));
   },
 
-  onRun() {
-  },
+  onRun() {},
 
-  onDestroy() {
-  }
-})
+  onDestroy() {},
+});

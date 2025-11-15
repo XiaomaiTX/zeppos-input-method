@@ -1,2 +1,0 @@
-# ZeppOS-Input-Method
-

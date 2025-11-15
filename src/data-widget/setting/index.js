@@ -1,7 +1,7 @@
-import { gettext } from 'i18n'
+import { gettext } from "i18n";
 
 AppSettingsPage({
   build() {
-    console.log(gettext('example'))
-  }
-})
+    console.log(gettext("example"));
+  },
+});
