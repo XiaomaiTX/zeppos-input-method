@@ -1,0 +1,35 @@
+lockfileVersion: "9.0"
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
+
+importers:
+  .:
+    devDependencies:
+      "@zeppos/device-types":
+        specifier: ^3.0.0
+        version: 3.0.0
+      prettier:
+        specifier: 3.6.2
+        version: 3.6.2
+
+packages:
+  "@zeppos/device-types@3.0.0":
+    resolution:
+      {
+        integrity: sha512-vFd880TxkAaSO2QmLBFIzS0zUXnwRDXlM4FZTdpOgotKpshokOwSTtzIeysf3TIMFSh/wFdbGkkYrUyRxR9w8Q==,
+      }
+
+  prettier@3.6.2:
+    resolution:
+      {
+        integrity: sha512-I7AIg5boAr5R0FFtJ6rCfD+LFsWHp81dolrFD8S79U9tb8Az2nGrJncnMSnys+bpQJfRUzqs9hnA81OAA3hCuQ==,
+      }
+    engines: { node: ">=14" }
+    hasBin: true
+
+snapshots:
+  "@zeppos/device-types@3.0.0": {}
+
+  prettier@3.6.2: {}
