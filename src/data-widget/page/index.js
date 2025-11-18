@@ -4,7 +4,7 @@ import { getTextLayout } from "@zos/ui";
 import { InputMethod } from "../utils/inputMethod/inputMethod";
 
 const inputMethod = new InputMethod({
-  keyboard_type: "EN",
+  keyboard_type: "ZH_CN_PY",
   inputbox_type: "NORMAL",
   text: "",
   title: "输入法",
@@ -21,7 +21,7 @@ Page({
 
       const spaceChar = " ".repeat(currentLength);
       const { width, height } = getTextLayout(spaceChar, {
-        text_size: 45,
+        text_size: px(30),
         text_width: 0,
         wrapped: 0,
       });

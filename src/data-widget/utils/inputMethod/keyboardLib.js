@@ -10,8 +10,9 @@ import {
   BUTTON_IMG_STYLE,
   PRESS_MASK_STYLE,
   CHOOSE_WORD_TEXT_STYLE,
+  QWERT_LAYOUT,
+  QWERT_LAYOUT_STYLE,
 } from "./styles";
-import { QWERT_Layout } from "./layout";
 import { LINK_EVENT_TYPE, KeyBoardCondition, InputboxCondition } from "./enums";
 import { Fx } from "../fx";
 import * as hmUI from "@zos/ui";
@@ -105,59 +106,91 @@ class BaseKeyboard {
     }
   }
   getKeyBorder(isFuncBar, index) {
+    const {
+      KEY_WIDTH,
+      KEY_HEIGHT,
+      KEY_SPACING,
+      KEY_PADDING,
+      ROW_START_Y,
+      ROW1_OFFSET_Y,
+      ROW2_OFFSET_Y,
+      ROW3_OFFSET_Y,
+      ROW4_OFFSET_Y,
+      KEYS_PER_ROW1,
+      KEYS_PER_ROW2,
+      KEYS_PER_ROW3,
+      CAPSLOCK_WIDTH,
+      CAPSLOCK_HEIGHT,
+      SPACE_WIDTH,
+      SPACE_HEIGHT,
+      DELETE_WIDTH,
+      DELETE_HEIGHT,
+      CAPSLOCK_X,
+      SPACE_X,
+      DELETE_X,
+    } = QWERT_LAYOUT_STYLE;
+
     switch (isFuncBar) {
       case true:
         break;
       case false:
-        if (index < 10)
+        if (index < KEYS_PER_ROW1) {
           return {
-            x: this.buttonLineSafeDistance[0] + px(4) + px(46) * index,
-            y: BOUNDARY_Y + FUNCTION_BAR_H + px(5),
-            w: px(38),
-            h: px(50),
+            x:
+              this.buttonLineSafeDistance[0] +
+              KEY_PADDING +
+              KEY_SPACING * index,
+            y: ROW_START_Y + ROW1_OFFSET_Y,
+            w: KEY_WIDTH,
+            h: KEY_HEIGHT,
           };
-        else if (index < 19)
+        } else if (index < KEYS_PER_ROW1 + KEYS_PER_ROW2) {
           return {
-            x: this.buttonLineSafeDistance[1] + px(4) + px(46) * (index - 10),
-            y: BOUNDARY_Y + FUNCTION_BAR_H + px(65),
-            w: px(38),
-            h: px(50),
+            x:
+              this.buttonLineSafeDistance[1] +
+              KEY_PADDING +
+              KEY_SPACING * (index - KEYS_PER_ROW1),
+            y: ROW_START_Y + ROW2_OFFSET_Y,
+            w: KEY_WIDTH,
+            h: KEY_HEIGHT,
           };
-        else if (index < 26)
+        } else if (index < KEYS_PER_ROW1 + KEYS_PER_ROW2 + KEYS_PER_ROW3) {
           return {
-            x: this.buttonLineSafeDistance[2] + px(4) + px(46) * (index - 19),
-            y: BOUNDARY_Y + FUNCTION_BAR_H + px(125),
-            w: px(38),
-            h: px(50),
+            x:
+              this.buttonLineSafeDistance[2] +
+              KEY_PADDING +
+              KEY_SPACING * (index - KEYS_PER_ROW1 - KEYS_PER_ROW2),
+            y: ROW_START_Y + ROW3_OFFSET_Y,
+            w: KEY_WIDTH,
+            h: KEY_HEIGHT,
           };
-        else {
+        } else {
           switch (index) {
             case 26:
               return {
-                x: px(83),
-                y: px(425),
-                w: px(92),
-                h: px(48),
+                x: CAPSLOCK_X,
+                y: ROW4_OFFSET_Y,
+                w: CAPSLOCK_WIDTH,
+                h: CAPSLOCK_HEIGHT,
               }; // CapsLock
             case 27:
               return {
-                x: px(180),
-                y: px(425),
-                w: px(120),
-                h: px(47),
+                x: SPACE_X,
+                y: ROW4_OFFSET_Y,
+                w: SPACE_WIDTH,
+                h: SPACE_HEIGHT,
               }; // Space
             case 28:
               return {
-                x: px(305),
-                y: px(425),
-                w: px(92),
-                h: px(48),
+                x: DELETE_X,
+                y: ROW4_OFFSET_Y,
+                w: DELETE_WIDTH,
+                h: DELETE_HEIGHT,
               }; // Delete
           }
         }
     }
   }
-
   longPress() {
     clearTimeout(this.longPressTimeoutID);
     this.longPressTimeoutID = null;
@@ -168,7 +201,7 @@ class BaseKeyboard {
       if (this.lastButton.index < 26) {
         this.father.link(true, {
           event: LINK_EVENT_TYPE.CHANGE,
-          data: QWERT_Layout.NumberAndSymbol[this.lastButton.index],
+          data: QWERT_LAYOUT.NumberAndSymbol[this.lastButton.index],
         });
         this.chooseWord("");
       } else {
@@ -235,18 +268,21 @@ class BaseKeyboard {
       enable: true,
       func: (res) => {
         this.background.setProperty(hmUI.prop.MORE, {
-            y: res,
-            pos_y: 0 - res,
-          });
+          y: res,
+          pos_y: 0 - res,
+        });
         this.buttonImg.setProperty(hmUI.prop.Y, res);
       },
 
-      onStop() {
-      },
+      onStop() {},
     });
 
-    this.pressMask.widget = hmUI.createWidget(hmUI.widget.STROKE_RECT,PRESS_MASK_STYLE );
-    this.chooseWordText.widget = hmUI.createWidget(hmUI.widget.TEXT, {...CHOOSE_WORD_TEXT_STYLE,
+    this.pressMask.widget = hmUI.createWidget(
+      hmUI.widget.STROKE_RECT,
+      PRESS_MASK_STYLE,
+    );
+    this.chooseWordText.widget = hmUI.createWidget(hmUI.widget.TEXT, {
+      ...CHOOSE_WORD_TEXT_STYLE,
       text: this.chooseWordArray.join("  "),
     });
     this.chooseWordText.widget.setEnable(false);
@@ -296,7 +332,7 @@ class BaseKeyboard {
           break;
         case hmUI.event.MOVE_OUT:
         case hmUI.event.MOVE_IN:
-        case hmUI.event.MOVE: 
+        case hmUI.event.MOVE:
           if (index < 26) {
             // input letter
             this.condition |= KeyBoardCondition.PRESS;
@@ -316,14 +352,14 @@ class BaseKeyboard {
               }, 600);
               this.chooseWord(
                 this.capsLock
-                  ? QWERT_Layout.Letters.Capital[index]
-                  : QWERT_Layout.Letters.LowerCase[index],
+                  ? QWERT_LAYOUT.Letters.Capital[index]
+                  : QWERT_LAYOUT.Letters.LowerCase[index],
               );
               return {
                 event: LINK_EVENT_TYPE.CHANGE,
                 data: this.capsLock
-                  ? QWERT_Layout.Letters.Capital[index]
-                  : QWERT_Layout.Letters.LowerCase[index],
+                  ? QWERT_LAYOUT.Letters.Capital[index]
+                  : QWERT_LAYOUT.Letters.LowerCase[index],
               };
             }
           } else {
@@ -376,14 +412,14 @@ class BaseKeyboard {
 
             this.chooseWord(
               this.capsLock
-                ? QWERT_Layout.Letters.Capital[index]
-                : QWERT_Layout.Letters.LowerCase[index],
+                ? QWERT_LAYOUT.Letters.Capital[index]
+                : QWERT_LAYOUT.Letters.LowerCase[index],
             );
             return {
               event: LINK_EVENT_TYPE.INPUT,
               data: this.capsLock
-                ? QWERT_Layout.Letters.Capital[index]
-                : QWERT_Layout.Letters.LowerCase[index],
+                ? QWERT_LAYOUT.Letters.Capital[index]
+                : QWERT_LAYOUT.Letters.LowerCase[index],
             };
           } else {
             // press func
@@ -507,12 +543,15 @@ export const KeyBoardLib = {
 
         case hmUI.event.CLICK_UP:
           if (this.condition === KeyBoardCondition.PRESS) {
-            const { width: spaceWidth } = hmUI.getTextLayout("  ", {
-              text_size: px(30),
-              text_width: 0,
-              wrapped: 0,
-            });
-
+            const spaceWidth = px(14);
+            // 添加调试信息
+            console.log(`[DEBUG] 点击绝对位置: ${info.x}`);
+            console.log(
+              `[DEBUG] 候选词区域起始X: ${this.chooseWordText.border.x}`,
+            );
+            console.log(
+              `[DEBUG] 相对点击位置: ${info.x - this.chooseWordText.border.x}`,
+            );
             let currentStart = 0;
             for (let i = 0; i < this.chooseWordArray.length; i++) {
               const word = this.chooseWordArray[i];
@@ -521,13 +560,16 @@ export const KeyBoardLib = {
                 text_width: 0,
                 wrapped: 0,
               });
-
               const wordEnd = currentStart + wordWidth;
+              console.log(
+                `[DEBUG] 候选词 "${word}" 范围: ${currentStart} - ${wordEnd}`,
+              );
 
               if (
                 info.x - this.chooseWordText.border.x >= currentStart &&
                 info.x - this.chooseWordText.border.x < wordEnd
               ) {
+                console.log(`[DEBUG] 匹配到词: ${word}`);
                 const match = this.father.getText().match(/[a-z]+$/i);
                 const pinyinPart = match ? match[0] : ""; // 提取的拼音部分
                 if (pinyinPart === "") {

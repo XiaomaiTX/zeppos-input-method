@@ -1,11 +1,9 @@
 import * as hmUI from "@zos/ui";
-// 获取设备信息
 import { getDeviceInfo, SCREEN_SHAPE_SQUARE } from "@zos/device";
 const { width, screenShape } = getDeviceInfo();
 
-// 全局常量
-export const BOUNDARY_Y = SCREEN_SHAPE_SQUARE ? px(190) : px(190); // InputBox和Keyboard分界线y坐标
-export const FUNCTION_BAR_H = SCREEN_SHAPE_SQUARE ? px(50) : px(50); // 预留给选词和工具区域的高度
+export const BOUNDARY_Y = px(190) // InputBox和Keyboard分界线y坐标
+export const FUNCTION_BAR_H = px(50) // 预留给选词和工具区域的高度
 
 // inputMethod.js
 export const CONTROL_PLANE_TEXT_STYLE={
@@ -23,7 +21,7 @@ export const BUTTON_LINE_NUM = 4;
 export const BUTTON_CAPSLOCK_UP_IMG = "image/keyboardEN_button_Earth_UP.png";
 export const BUTTON_CAPSLOCK_DOWN_IMG = "image/keyboardEN_button_Earth.png";
 export const FUNCTION_BAR_IMG_STYLE = {
-        x: px(0),
+      x: px(0),
       y: px(400),
       w: px(480),
       h: px(480) - BOUNDARY_Y,
@@ -155,3 +153,119 @@ export const TITLE_WIDGET_STYLE = {
 //   safetyDistance: px(40), // 安全距离
 //   delTimeMs: 180, // 删除按键触发时间（毫秒）
 // };
+export const QWERT_LAYOUT = {
+  // QWERT键盘
+  NumberAndSymbol: [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "0",
+    "!",
+    "@",
+    "#",
+    "-",
+    "%",
+    "&",
+    "*",
+    "(",
+    ")",
+    "~",
+    "/",
+    ".",
+    ",",
+    ":",
+    ";",
+    "?",
+  ],
+  Letters: {
+    Capital: [
+      "Q",
+      "W",
+      "E",
+      "R",
+      "T",
+      "Y",
+      "U",
+      "I",
+      "O",
+      "P",
+      "A",
+      "S",
+      "D",
+      "F",
+      "G",
+      "H",
+      "J",
+      "K",
+      "L",
+      "Z",
+      "X",
+      "C",
+      "V",
+      "B",
+      "N",
+      "M",
+    ],
+    LowerCase: [
+      "q",
+      "w",
+      "e",
+      "r",
+      "t",
+      "y",
+      "u",
+      "i",
+      "o",
+      "p",
+      "a",
+      "s",
+      "d",
+      "f",
+      "g",
+      "h",
+      "j",
+      "k",
+      "l",
+      "z",
+      "x",
+      "c",
+      "v",
+      "b",
+      "n",
+      "m",
+    ],
+  },
+};
+export const QWERT_LAYOUT_STYLE = {
+  KEY_WIDTH: 38,
+  KEY_HEIGHT: 50,
+  KEY_SPACING: 46,
+  KEY_PADDING: 4,
+  
+  ROW_START_Y: BOUNDARY_Y + FUNCTION_BAR_H,
+  ROW1_OFFSET_Y: 5,
+  ROW2_OFFSET_Y: 65,
+  ROW3_OFFSET_Y: 125,
+  ROW4_OFFSET_Y: 425,
+  
+  KEYS_PER_ROW1: 10,
+  KEYS_PER_ROW2: 9,
+  KEYS_PER_ROW3: 7,
+  
+  CAPSLOCK_WIDTH: 92,
+  CAPSLOCK_HEIGHT: 48,
+  SPACE_WIDTH: 120,
+  SPACE_HEIGHT: 47,
+  DELETE_WIDTH: 92,
+  DELETE_HEIGHT: 48,
+  
+  CAPSLOCK_X: 83,
+  SPACE_X: 180,
+  DELETE_X: 305
+};

@@ -7,7 +7,12 @@
 import * as hmUI from "@zos/ui";
 import { Fx } from "../fx";
 import { LINK_EVENT_TYPE, InputboxCondition } from "./enums";
-import { BACKGROUD_WIDGET_STYLE, MASK_STYLE, BUTTON_TEXT_WIDGET_STYLE, TITLE_WIDGET_STYLE } from "./styles";
+import {
+  BACKGROUD_WIDGET_STYLE,
+  MASK_STYLE,
+  BUTTON_TEXT_WIDGET_STYLE,
+  TITLE_WIDGET_STYLE,
+} from "./styles";
 
 // 光标类 用于控制光标的位置与动画
 class Cursor {
@@ -118,11 +123,18 @@ class TextLine {
     this.leftWidth = this.border.w - px(40); // safetyDistance
     this.textShow = text;
     for (let i = 0, width = 0; i < text.length; ++i) {
-      width = hmUI.getTextLayout(text.charAt(i), {
-        text_size,
-        text_width: 0,
-        wrapped: 0,
-      }).width;
+      const char = text.charAt(i);
+
+      if (char === " ") {
+        width = px(11);
+      } else {
+        width = hmUI.getTextLayout(char, {
+          text_size,
+          text_width: 0,
+          wrapped: 0,
+        }).width;
+      }
+
       this.textWList[i] = width;
       this.textTotalWidth += width;
     }
@@ -189,13 +201,17 @@ class TextLine {
     this.textLength = text.length;
     this.textTotalWidth = 0;
 
-    for (let i = 0; i < text.length; ++i) {
+    for (let i = 0, width = 0; i < text.length; ++i) {
       const char = text.charAt(i);
-      const width = hmUI.getTextLayout(char, {
-        text_size: this.text_size,
-        text_width: 0,
-        wrapped: 0,
-      }).width;
+      if (char === " ") {
+        width = px(11);
+      } else {
+        width = hmUI.getTextLayout(char, {
+          text_size: this.text_size,
+          text_width: 0,
+          wrapped: 0,
+        }).width;
+      }
       console.log(`char '${char}' width: ${width}`);
       this.textWList[i] = width;
       this.textTotalWidth += width;
@@ -295,12 +311,19 @@ export const InputBoxLib = {
       this.lastTouch = { x: 0, y: 0 };
     }
     onCreate() {
-      this.backgroundWidget = hmUI.createWidget(hmUI.widget.IMG, BACKGROUD_WIDGET_STYLE);
+      this.backgroundWidget = hmUI.createWidget(
+        hmUI.widget.IMG,
+        BACKGROUD_WIDGET_STYLE,
+      );
       this.textLine.onCreate();
       this.cursor.onCreate();
       this.mask = hmUI.createWidget(hmUI.widget.IMG, MASK_STYLE);
-      this.btnTextWidget = hmUI.createWidget(hmUI.widget.TEXT, BUTTON_TEXT_WIDGET_STYLE);
-      this.titleWidget = hmUI.createWidget(hmUI.widget.TEXT, {...TITLE_WIDGET_STYLE,
+      this.btnTextWidget = hmUI.createWidget(
+        hmUI.widget.TEXT,
+        BUTTON_TEXT_WIDGET_STYLE,
+      );
+      this.titleWidget = hmUI.createWidget(hmUI.widget.TEXT, {
+        ...TITLE_WIDGET_STYLE,
         text: this.title,
       });
     }
