@@ -3,7 +3,14 @@
  * Date:     2022/10/2
  * Describe: A JS class for Input Method
  */
-import * as hmUI from "@zos/ui";
+try {
+  if (typeof hmUI === 'undefined') {
+    hmUI = require('@zos/ui');
+  }
+} catch (e) {
+  console.error('hmUI module is not available:', e);
+}
+// import * as hmUI from "@zos/ui";
 
 import { InputBoxLib } from "./inputboxLib";
 import { KeyBoardLib } from "./keyboardLib";
@@ -15,9 +22,6 @@ import {
   InputboxCondition,
 } from "./enums";
 import { BOUNDARY_Y, CONTROL_PLANE_TEXT_STYLE } from "./styles";
-
-const app = getApp();
-const globalData = app._options.globalData;
 
 // InputMethod 输入法类
 // 包含一个InputBox实例和一个Keyboard可选列表，通过一个control面板将触控事件分发给两个实例

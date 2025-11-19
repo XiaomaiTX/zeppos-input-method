@@ -1,8 +1,12 @@
-import { InputMethod } from "../utils/inputMethod/inputMethod";
+import * as hmUI from "@zos/ui";
+import { InputMethod } from "../utils/inputMethod";
+
+const prevText = hmUI.keyboard.getTextContext()
+
 const inputMethod = new InputMethod({
   keyboard_type: InputMethod.KEYBOARD_TYPE.ENGLISH,
   inputbox_type: InputMethod.INPUTBOX_TYPE.NORMAL,
-  text: "",
+  text: prevText,
   title: "输入法",
 });
 
