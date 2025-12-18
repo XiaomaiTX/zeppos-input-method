@@ -42,7 +42,7 @@
           ]
         },
         "page": {
-          "pages": ["page/index"]
+          "pages": ["page/index", "page/Settings/index", "page/Demo/index"]
         },
         "app-side": {
           "path": "app-side/index"

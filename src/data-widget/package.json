@@ -11,5 +11,9 @@
   "devDependencies": {
     "@zeppos/device-types": "^3.0.0",
     "prettier": "3.6.2"
+  },
+  "dependencies": {
+    "@x1a0ma17x/zeppos-fx": "^2.0.3",
+    "@x1a0ma17x/zeppos-reactive": "^1.0.2"
   }
 }

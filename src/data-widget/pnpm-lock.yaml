@@ -1,13 +1,21 @@
-lockfileVersion: "9.0"
+lockfileVersion: '9.0'
 
 settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
 importers:
+
   .:
+    dependencies:
+      '@x1a0ma17x/zeppos-fx':
+        specifier: ^2.0.3
+        version: 2.0.3
+      '@x1a0ma17x/zeppos-reactive':
+        specifier: ^1.0.2
+        version: 1.0.2
     devDependencies:
-      "@zeppos/device-types":
+      '@zeppos/device-types':
         specifier: ^3.0.0
         version: 3.0.0
       prettier:
@@ -15,21 +23,27 @@ importers:
         version: 3.6.2
 
 packages:
-  "@zeppos/device-types@3.0.0":
-    resolution:
-      {
-        integrity: sha512-vFd880TxkAaSO2QmLBFIzS0zUXnwRDXlM4FZTdpOgotKpshokOwSTtzIeysf3TIMFSh/wFdbGkkYrUyRxR9w8Q==,
-      }
+
+  '@x1a0ma17x/zeppos-fx@2.0.3':
+    resolution: {integrity: sha512-mhZhlWRZjNXyhNrKHHjtp4Z9rOIQhDd5SxDoPIqVwdy8tialvAAe4qjxCcB+tAMYkLgs6CUj9uDmq7ZQZnxwfQ==}
+
+  '@x1a0ma17x/zeppos-reactive@1.0.2':
+    resolution: {integrity: sha512-zIV/hda4S0zOIhQB/Ya1wYYeNelLlcZ20BCBd5PgDtgvovohY6Nys62utrUAUbJKfZdRxhfLah/ra8I+rzWHlg==}
+
+  '@zeppos/device-types@3.0.0':
+    resolution: {integrity: sha512-vFd880TxkAaSO2QmLBFIzS0zUXnwRDXlM4FZTdpOgotKpshokOwSTtzIeysf3TIMFSh/wFdbGkkYrUyRxR9w8Q==}
 
   prettier@3.6.2:
-    resolution:
-      {
-        integrity: sha512-I7AIg5boAr5R0FFtJ6rCfD+LFsWHp81dolrFD8S79U9tb8Az2nGrJncnMSnys+bpQJfRUzqs9hnA81OAA3hCuQ==,
-      }
-    engines: { node: ">=14" }
+    resolution: {integrity: sha512-I7AIg5boAr5R0FFtJ6rCfD+LFsWHp81dolrFD8S79U9tb8Az2nGrJncnMSnys+bpQJfRUzqs9hnA81OAA3hCuQ==}
+    engines: {node: '>=14'}
     hasBin: true
 
 snapshots:
-  "@zeppos/device-types@3.0.0": {}
+
+  '@x1a0ma17x/zeppos-fx@2.0.3': {}
+
+  '@x1a0ma17x/zeppos-reactive@1.0.2': {}
+
+  '@zeppos/device-types@3.0.0': {}
 
   prettier@3.6.2: {}
