@@ -142,7 +142,7 @@ export class InputMethod {
     ); // TODO 可能不存在这种事件
     // 返回
     hmUI.keyboard.inputText(this.getText())
-    hmUI.deleteKeyboard();
+    hmUI.keyboard.sendFnKey(hmUI.keyboard.ENTER)
     // if (globalData.params.targetAppid && globalData.params.targetUrl) {
     //   hmApp.startApp({
     //     appid: globalData.params.targetAppid,
