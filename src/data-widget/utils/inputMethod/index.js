@@ -3,14 +3,8 @@
  * Date:     2022/10/2
  * Describe: A JS class for Input Method
  */
-try {
-  if (typeof hmUI === 'undefined') {
-    hmUI = require('@zos/ui');
-  }
-} catch (e) {
-  console.error('hmUI module is not available:', e);
-}
-// import * as hmUI from "@zos/ui";
+
+import * as hmUI from "@zos/ui";
 
 import { InputBoxLib } from "./inputboxLib";
 import { KeyBoardLib } from "./keyboardLib";
@@ -147,6 +141,8 @@ export class InputMethod {
       this.controlCallBack[2],
     ); // TODO 可能不存在这种事件
     // 返回
+    hmUI.keyboard.inputText(this.getText())
+    hmUI.deleteKeyboard();
     // if (globalData.params.targetAppid && globalData.params.targetUrl) {
     //   hmApp.startApp({
     //     appid: globalData.params.targetAppid,

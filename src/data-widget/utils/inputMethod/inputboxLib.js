@@ -3,7 +3,6 @@
 // onTouch(event, info) 若位置不在范围内event为MOVE_OUT 返回值为输入类型
 // onDelete()
 
-// import { dataManager } from "./dataManager";
 import * as hmUI from "@zos/ui";
 import { Fx } from "../fx";
 import { LINK_EVENT_TYPE, InputboxCondition } from "./enums";
@@ -12,6 +11,9 @@ import {
   MASK_STYLE,
   BUTTON_TEXT_WIDGET_STYLE,
   TITLE_WIDGET_STYLE,
+  INPUTBOX_TEXT_STYLE,
+  INPUTBOX_FINISH_BUTTON_STYLE,
+  INPUTBOX_BACKGROUND_IMG_STYLE,
 } from "./styles";
 
 // 光标类 用于控制光标的位置与动画
@@ -264,6 +266,8 @@ export const InputBoxLib = {
       this.father = father;
       this.text = text;
       this.backgroundWidget = null;
+      this.inputboxBackgroundImg = null;
+      this.inputboxMask = null;
       this.borderWidget = null;
       this.textWidget = null;
       this.btnBorderWidget = null;
@@ -273,8 +277,8 @@ export const InputBoxLib = {
       this.charAt = 0;
       this.beginSafetyDistance = px(18);
       this.safetyDistance = px(40); // 删除和输入时光标距离边框的最大水平距离 safetyDistance
-      this.border = { x: px(50), y: px(100), w: px(285), h: px(70) };
-      this.btnBorder = { x: px(336), y: px(105), w: px(79), h: px(55) };
+      this.border = INPUTBOX_TEXT_STYLE;
+      this.btnBorder = INPUTBOX_FINISH_BUTTON_STYLE;
       this.title = title ? title : "请输入";
       this.cursor = new Cursor({
         border: this.border,
@@ -298,9 +302,13 @@ export const InputBoxLib = {
         hmUI.widget.IMG,
         BACKGROUD_WIDGET_STYLE,
       );
+      this.inputboxBackgroundImg = hmUI.createWidget(
+        hmUI.widget.IMG,
+        INPUTBOX_BACKGROUND_IMG_STYLE,
+      );
       this.textLine.onCreate();
       this.cursor.onCreate();
-      this.mask = hmUI.createWidget(hmUI.widget.IMG, MASK_STYLE);
+      this.inputboxMask = hmUI.createWidget(hmUI.widget.IMG, MASK_STYLE);
       this.btnTextWidget = hmUI.createWidget(
         hmUI.widget.TEXT,
         BUTTON_TEXT_WIDGET_STYLE,
