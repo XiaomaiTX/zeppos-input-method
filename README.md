@@ -1,0 +1,64 @@
+# ZeppOS InputMethod
+
+A flexible, powerful, and visually appealing input method component for ZeppOS.
+
+EN | [中文文档](./README_zh-CN.md)
+
+## Features
+
+- **Multiple Usage Modes**
+  - Download and install the official demo directly — ready to use immediately.
+  - Embed as a component within your own ZeppOS applications.
+- **High-performance, object-oriented design** that can be easily extended into the input method you need.
+- **Multi-device adaptation** and **multi-language support**.
+- **Smooth animation experience** powered by [zeppos-fx](https://github.com/XiaomaiTX/zeppos-fx).
+- **Fully customizable theme colors** and support for **custom background images**.
+
+## Usage
+
+### Download via Zepp Store
+
+Coming soon — stay tuned.
+
+### Embed as a Component in Your ZeppOS App
+
+```js
+import { InputMethod } from "../utils/inputMethod";
+
+const inputMethod = new InputMethod({
+    keyboard_type: InputMethod.KEYBOARD_TYPE.ENGLISH,
+    inputbox_type: InputMethod.INPUTBOX_TYPE.NORMAL,
+    text: "",
+    title: "Keyboard",
+});
+
+inputMethod.start();
+inputMethod.delete();
+```
+
+## Development Guide
+
+### Create a New Keyboard Based on BaseKeyboard
+
+Refer to the implementation of the `ZH_CN_PY` keyboard and modify it according to your needs.
+
+```js
+export const KeyBoardLib = {
+  EN: class EN extends BaseKeyboard {},
+  NUM: class NUM {},
+  ZH_CN_PY: class ZH_CN_PY extends BaseKeyboard {
+    chooseWord(inputText) {},
+    updateChooseWord(event, info) {},
+    extractPinyin(inputText) {},
+    // ...
+  }
+};
+```
+
+## License
+
+Distributed under the MIT License. See `LICENSE.txt` for more information.
+
+## Contact
+
+XiaomaiTX – <Me@xiaomaitx.com>
