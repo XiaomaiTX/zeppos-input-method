@@ -4,7 +4,7 @@
 // onDelete()
 
 import * as hmUI from "@zos/ui";
-import { Fx } from "../fx";
+import { Fx } from "@x1a0ma17x/zeppos-fx";
 import { LINK_EVENT_TYPE, InputboxCondition } from "./enums";
 import {
   BACKGROUD_WIDGET_STYLE,

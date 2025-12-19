@@ -14,7 +14,7 @@ import {
   QWERT_LAYOUT_STYLE,
 } from "./styles";
 import { LINK_EVENT_TYPE, KeyBoardCondition, InputboxCondition } from "./enums";
-import { Fx } from "../fx";
+import { Fx } from "@x1a0ma17x/zeppos-fx";
 import * as hmUI from "@zos/ui";
 
 import { pinyin_dict_notone } from "./pinyin_dict_notone";
