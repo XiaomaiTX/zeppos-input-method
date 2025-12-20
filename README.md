@@ -9,10 +9,17 @@ EN | [中文文档](./README_zh-CN.md)
 - **Multiple Usage Modes**
   - Download and install the official demo directly — ready to use immediately.
   - Embed as a component within your own ZeppOS applications.
+- Supports **Scrolling Input**
+- Supports **Chinese Pinyin Input**
 - **High-performance, object-oriented design** that can be easily extended into the input method you need.
 - **Multi-device adaptation** and **multi-language support**.
 - **Smooth animation experience** powered by [zeppos-fx](https://github.com/XiaomaiTX/zeppos-fx).
 - **Fully customizable theme colors** and support for **custom background images**.
+
+## Important Notes
+
+- Only supports devices running ZeppOS API 4.2 or higher
+- Minor issues remain pending official ZeppOS API fixes [Ref #8](https://github.com/XiaomaiTX/zeppos-input-method/issues/8)
 
 ## Usage
 
