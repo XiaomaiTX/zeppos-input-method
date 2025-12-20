@@ -141,6 +141,7 @@ export class InputMethod {
       this.controlCallBack[2],
     ); // TODO 可能不存在这种事件
     // 返回
+    hmUI.keyboard.clearInput()
     hmUI.keyboard.inputText(this.getText())
     hmUI.keyboard.sendFnKey(hmUI.keyboard.ENTER)
     // if (globalData.params.targetAppid && globalData.params.targetUrl) {
