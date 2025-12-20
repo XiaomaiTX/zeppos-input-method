@@ -54,10 +54,28 @@ Page({
           title: "Settings",
           items: [
             {
+              title: "Try It Now!",
+              action: () => {
+                hmRouter.push({
+                  url: "page/Demo/index",
+                });
+              },
+              customStyles: {
+                SETTINGS_BUTTON_STYLE: {
+                  color: 0xffffff,
+                },
+                SETTINGS_BUTTON_TITLE_STYLE: {
+                  color: 0x000000,
+                  align_h: hmUI.align.CENTER_H,
+                },
+              },
+            },
+
+            {
               title: "Keyboard Enable Status",
               description: state.isKeyboardEnabled ? "Enabled" : "Disabled",
               icon: state.isKeyboardEnabled
-                ? "/image/checkbox-circle-fill@1x.png"
+                ? "image/checkbox-circle-fill@1x.png"
                 : "image/close-circle-fill@1x.png",
               action: () => {
                 hmUI.keyboard.gotoSettings();
@@ -69,7 +87,7 @@ Page({
                 ? "Selected"
                 : "Not Selected",
               icon: state.isKeyboardSelected
-                ? "/image/checkbox-circle-fill@1x.png"
+                ? "image/checkbox-circle-fill@1x.png"
                 : "image/close-circle-fill@1x.png",
               action: () => {
                 console.log("Keyboard Selected Status");
@@ -78,6 +96,7 @@ Page({
             {
               title: "Select Keyboard Type",
               description: state.selectedKeyboardType,
+              icon: "image/arrow-right-double-fill@1x.png",
               action: () => {
                 hmRouter.push({
                   url: "page/Settings/select-keyboard-type",
@@ -87,6 +106,7 @@ Page({
             {
               title: "Select Theme",
               description: `${this.colorToString(state.customTheme)}`,
+              icon: "image/arrow-right-double-fill@1x.png",
               action: () => {
                 hmRouter.push({
                   url: "page/Settings/select-theme",
@@ -99,10 +119,11 @@ Page({
               },
             },
             {
-              title: "Try It Now!",
+              title: "About",
+              icon: "image/arrow-right-double-fill@1x.png",
               action: () => {
                 hmRouter.push({
-                  url: "page/Demo/index",
+                  url: "page/About/index",
                 });
               },
             },
@@ -117,6 +138,15 @@ Page({
                     hmRouter.exit();
                   }
                 });
+              },
+              customStyles: {
+                  SETTINGS_BUTTON_STYLE: {
+                    color: 0xff0000,
+                  },
+                  SETTINGS_BUTTON_TITLE_STYLE: {
+                    color: 0xffffff,
+                    align_h: hmUI.align.CENTER_H,
+                },
               },
             },
           ],

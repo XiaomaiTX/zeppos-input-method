@@ -10,12 +10,12 @@ Page({
       onComplete: (_, result) => {
         console.log("输入内容:", result.data);
         hmRouter.back();
-        hmUI.destroyKeyboard();
+        hmUI.deleteKeyboard();
       },
       onCancel: (_, result) => {
         console.log("取消输入");
         hmRouter.back();
-        hmUI.destroyKeyboard();
+        hmUI.deleteKeyboard();
       },
       text: "", // 初始化文本
     });
@@ -23,6 +23,6 @@ Page({
   onInit() {},
 
   onDestroy() {
-    hmUI.destroyKeyboard();
+    hmUI.deleteKeyboard();
   },
 });

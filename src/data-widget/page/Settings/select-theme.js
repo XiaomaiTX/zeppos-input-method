@@ -37,7 +37,7 @@ Page({
 
       state.PageData = computed(() => {
         return {
-          title: "Custom Theme",
+          title: "Select Theme",
           items: [
             ...customThemes.map((theme) => {
               return {
@@ -81,11 +81,6 @@ Page({
                   },
                   text: this.colorToString(state.customTheme) || "",
                 });
-              },
-              customStyles: {
-                SETTINGS_BUTTON_DESCRIPTION_STYLE: {
-                  color: state.customTheme,
-                },
               },
             },
           ],
