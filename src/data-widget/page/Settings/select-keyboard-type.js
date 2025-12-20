@@ -53,13 +53,7 @@ Page({
               action: () => {
                 state.selectedKeyboardType = "ZH_CN_PY";
               },
-            },
-            {
-              title: "Save and Go Back",
-              action: () => {
-                hmRouter.back();
-              },
-            },
+            }
           ],
         };
       });

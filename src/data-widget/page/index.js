@@ -7,10 +7,16 @@ import { TextTyper } from "../components/ui/text-typer";
 import { ProgressArc } from "../components/ui/progress-arc";
 const arc = new ProgressArc();
 
+
+
 Page({
   onInit() {
     arc.start();
-    const initConfig = { isFirstRun: true, selectedKeyboardType: "EN" };
+    const initConfig = {
+      isFirstRun: true,
+      selectedKeyboardType: "EN",
+      customTheme: 0xffffff,
+    };
     AsyncStorage.ReadJson("config.json", (err, config) => {
       if (!err) {
         if (config.isFirstRun) {

@@ -45,8 +45,9 @@
           "pages": [
             "page/index",
             "page/Settings/index",
-            "page/Demo/index",
-            "page/Settings/selectKeyboard"
+            "page/Settings/select-keyboard-type",
+            "page/Settings/select-theme",
+            "page/Demo/index"
           ]
         },
         "app-side": {

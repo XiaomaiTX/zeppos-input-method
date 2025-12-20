@@ -14,6 +14,7 @@ const state = reactive({
   isKeyboardEnabled: false,
   isKeyboardSelected: false,
   selectedKeyboardType: "",
+  customTheme: 0xffffff,
   PageData: {},
 });
 
@@ -25,6 +26,7 @@ Page({
     AsyncStorage.ReadJson("config.json", (err, config) => {
       if (!err) {
         state.selectedKeyboardType = config.selectedKeyboardType;
+        state.customTheme = config.customTheme;
       }
     });
     hmInteraction.onGesture({
@@ -78,8 +80,22 @@ Page({
               description: state.selectedKeyboardType,
               action: () => {
                 hmRouter.push({
-                  url: "page/Settings/selectKeyboard",
+                  url: "page/Settings/select-keyboard-type",
                 });
+              },
+            },
+            {
+              title: "Select Theme",
+              description: `${this.colorToString(state.customTheme)}`,
+              action: () => {
+                hmRouter.push({
+                  url: "page/Settings/select-theme",
+                });
+              },
+              customStyles: {
+                SETTINGS_BUTTON_DESCRIPTION_STYLE: {
+                  color: state.customTheme,
+                },
               },
             },
             {
@@ -87,6 +103,19 @@ Page({
               action: () => {
                 hmRouter.push({
                   url: "page/Demo/index",
+                });
+              },
+            },
+            {
+              title: "Clean Data",
+              action: () => {
+                AsyncStorage.RemoveFile("config.json", (err, ok) => {
+                  if (err) {
+                    console.log("Error deleting config:", err);
+                  } else if (ok) {
+                    console.log("Config deleted successfully");
+                    hmRouter.exit();
+                  }
                 });
               },
             },
@@ -99,10 +128,14 @@ Page({
         state.isKeyboardEnabled;
         state.isKeyboardSelected;
         state.selectedKeyboardType;
+        state.customTheme;
         page.updateUI(state.PageData.value);
       });
     }, 700);
   },
 
   onDestroy() {},
+  colorToString(color) {
+    return `0x${color.toString(16).toUpperCase().padStart(6, "0")}`;
+  },
 });
