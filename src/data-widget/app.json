@@ -42,7 +42,12 @@
           ]
         },
         "page": {
-          "pages": ["page/index", "page/Settings/index", "page/Demo/index"]
+          "pages": [
+            "page/index",
+            "page/Settings/index",
+            "page/Demo/index",
+            "page/Settings/selectKeyboard"
+          ]
         },
         "app-side": {
           "path": "app-side/index"

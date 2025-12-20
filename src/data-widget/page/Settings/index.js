@@ -2,6 +2,7 @@ import * as hmUI from "@zos/ui";
 import * as hmRouter from "@zos/router";
 import * as hmInteraction from "@zos/interaction";
 
+import { AsyncStorage } from "@silver-zepp/easy-storage";
 import { reactive, effect, computed } from "@x1a0ma17x/zeppos-reactive";
 
 import { ScrollListPage } from "../../components/ScrollListPage";
@@ -12,6 +13,7 @@ const arc = new ProgressArc();
 const state = reactive({
   isKeyboardEnabled: false,
   isKeyboardSelected: false,
+  selectedKeyboardType: "",
   PageData: {},
 });
 
@@ -20,6 +22,11 @@ Page({
     arc.start();
     state.isKeyboardEnabled = hmUI.keyboard.isEnabled();
     state.isKeyboardSelected = hmUI.keyboard.isSelected();
+    AsyncStorage.ReadJson("config.json", (err, config) => {
+      if (!err) {
+        state.selectedKeyboardType = config.selectedKeyboardType;
+      }
+    });
     hmInteraction.onGesture({
       callback: (event) => {
         if (event === hmInteraction.GESTURE_RIGHT) {
@@ -67,6 +74,15 @@ Page({
               },
             },
             {
+              title: "Select Keyboard Type",
+              description: state.selectedKeyboardType,
+              action: () => {
+                hmRouter.push({
+                  url: "page/Settings/selectKeyboard",
+                });
+              },
+            },
+            {
               title: "Try It Now!",
               action: () => {
                 hmRouter.push({
@@ -82,6 +98,7 @@ Page({
       effect(() => {
         state.isKeyboardEnabled;
         state.isKeyboardSelected;
+        state.selectedKeyboardType;
         page.updateUI(state.PageData.value);
       });
     }, 700);

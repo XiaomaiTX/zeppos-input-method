@@ -1,8 +1,11 @@
 import * as hmUI from "@zos/ui";
 import { onGesture, GESTURE_UP } from "@zos/interaction";
+
+import { AsyncStorage } from "@silver-zepp/easy-storage";
+
 import { InputMethod } from "../utils/inputMethod";
 
-const prevText = hmUI.keyboard.getTextContext()
+const prevText = hmUI.keyboard.getTextContext();
 
 const inputMethod = new InputMethod({
   keyboard_type: InputMethod.KEYBOARD_TYPE.ENGLISH,
@@ -22,12 +25,18 @@ DataWidget({
   build() {
     console.log("build");
     console.log(this.state.text);
-    inputMethod.start();
+    AsyncStorage.ReadJson("config.json", (err, config) => {
+      if (!err) {
+        inputMethod.keyboard_type = config.selectedKeyboardType;
+        console.log("Loaded keyboard type:", config.selectedKeyboardType);
+        inputMethod.start();
+      }
+    });
   },
   onDestroy() {
     console.log("onDestroy");
-    hmUI.keyboard.clearInput()
-    hmUI.keyboard.inputText(inputMethod.getText())
+    hmUI.keyboard.clearInput();
+    hmUI.keyboard.inputText(inputMethod.getText());
     inputMethod.delete();
   },
 });

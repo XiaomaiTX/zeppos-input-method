@@ -1,6 +1,8 @@
 import * as hmUI from "@zos/ui";
 import * as hmRouter from "@zos/router";
 
+import { AsyncStorage } from "@silver-zepp/easy-storage";
+
 import { TextTyper } from "../components/ui/text-typer";
 import { ProgressArc } from "../components/ui/progress-arc";
 const arc = new ProgressArc();
@@ -8,6 +10,25 @@ const arc = new ProgressArc();
 Page({
   onInit() {
     arc.start();
+    const initConfig = { isFirstRun: true, selectedKeyboardType: "EN" };
+    AsyncStorage.ReadJson("config.json", (err, config) => {
+      if (!err) {
+        if (config.isFirstRun) {
+          config.isFirstRun = false;
+          AsyncStorage.WriteJson("config.json", config, (err) => {
+            if (err) {
+              console.log("Error writing config:", err);
+            }
+          });
+        }
+      } else {
+        AsyncStorage.WriteJson("config.json", initConfig, (err) => {
+          if (err) {
+            console.log("Error writing config:", err);
+          }
+        });
+      }
+    });
   },
 
   build() {

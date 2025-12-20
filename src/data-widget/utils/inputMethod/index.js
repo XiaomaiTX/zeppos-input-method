@@ -141,9 +141,9 @@ export class InputMethod {
       this.controlCallBack[2],
     ); // TODO 可能不存在这种事件
     // 返回
-    hmUI.keyboard.clearInput()
-    hmUI.keyboard.inputText(this.getText())
-    hmUI.keyboard.sendFnKey(hmUI.keyboard.ENTER)
+    hmUI.keyboard.clearInput();
+    hmUI.keyboard.inputText(this.getText());
+    hmUI.keyboard.sendFnKey(hmUI.keyboard.ENTER);
     // if (globalData.params.targetAppid && globalData.params.targetUrl) {
     //   hmApp.startApp({
     //     appid: globalData.params.targetAppid,
@@ -161,6 +161,33 @@ export class InputMethod {
   }
   setText(text) {
     this.inputbox.text = text;
+  }
+  get keyboard_type() {
+    return this.keyboardType;
+  }
+  set keyboard_type(type) {
+    if (Object.values(KEYBOARD_TYPE).includes(type)) {
+      this.keyboardType = type;
+      this.keyboard = new KeyBoardLib[this.keyboardType]({
+        father: this,
+      });
+    } else {
+      console.log("keyboard.js: ERROR invalid keyboard_type", type);
+    }
+  }
+
+  get inputbox_type() {
+    return this.inputboxType;
+  }
+  set inputbox_type(type) {
+    if (Object.values(INPUTBOX_TYPE).includes(type)) {
+      this.inputboxType = type;
+      this.inputbox = new InputBoxLib[this.inputboxType]({
+        father: this,
+      });
+    } else {
+      console.log("keyboard.js: ERROR invalid inputbox_type", type);
+    }
   }
   static KEYBOARD_TYPE = KEYBOARD_TYPE;
   static INPUTBOX_TYPE = INPUTBOX_TYPE;
