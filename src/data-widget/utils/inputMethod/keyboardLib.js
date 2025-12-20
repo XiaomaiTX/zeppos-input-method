@@ -247,7 +247,7 @@ class BaseKeyboard {
       fps: 60,
       time: 0.2,
       style: Fx.Styles.EASE_IN_QUAD,
-      enable: true,
+      enabled: true,
       func: (res) => {
         this.functionBar.setProperty(hmUI.prop.MORE, {
           y: res,
@@ -265,7 +265,7 @@ class BaseKeyboard {
       fps: 60,
       time: 0.2,
       style: Fx.Styles.EASE_IN_QUAD,
-      enable: true,
+      enabled: true,
       func: (res) => {
         this.background.setProperty(hmUI.prop.MORE, {
           y: res,
@@ -313,7 +313,7 @@ class BaseKeyboard {
             style: Fx.Styles.EASE_OUT_QUAD,
             fps: 30,
             time: 0.1,
-            enable: true,
+            enabled: true,
             func: (res) =>
               temp.setProperty(
                 hmUI.prop.COLOR,

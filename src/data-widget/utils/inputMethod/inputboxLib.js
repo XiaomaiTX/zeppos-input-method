@@ -80,7 +80,7 @@ class Cursor {
         fps: 60,
         time: 0.1,
         style: Fx.Styles.EASE_IN_QUAD,
-        enable: true,
+        enabled: true,
         func: (x) => {
           this.widget.setProperty(
             hmUI.prop.X,
@@ -341,7 +341,7 @@ export const InputBoxLib = {
               end: 1,
               fps: 60,
               time: 0.2,
-              enable: true,
+              enabled: true,
               style: Fx.Styles.EASE_OUT_QUAD,
               func: (res) =>
                 this.btnTextWidget.setProperty(
@@ -355,7 +355,7 @@ export const InputBoxLib = {
                   fps: 60,
                   time: 0.2,
                   style: Fx.Styles.EASE_IN_QUAD,
-                  enable: true,
+                  enabled: true,
                   func: (res) =>
                     this.btnTextWidget.setProperty(
                       hmUI.prop.COLOR,
