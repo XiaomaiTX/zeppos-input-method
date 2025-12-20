@@ -71,7 +71,7 @@ class BaseKeyboard {
             min0(
               Math.floor((info.x - this.buttonLineSafeDistance[0]) / px(46)),
             ),
-            9,
+            px(9),
           );
         case 1:
           return (
@@ -79,8 +79,8 @@ class BaseKeyboard {
               min0(
                 Math.floor((info.x - this.buttonLineSafeDistance[1]) / px(46)),
               ),
-              8,
-            ) + 10
+              px(8),
+            ) + px(10)
           );
         case 2:
           return (
@@ -88,14 +88,14 @@ class BaseKeyboard {
               min0(
                 Math.floor((info.x - this.buttonLineSafeDistance[2]) / px(46)),
               ),
-              6,
-            ) + 19
+              px(6),
+            ) + px(19)
           );
         case 3:
-          if (info.x <= 175) {
+          if (info.x <= px(175)) {
             // CapsLock
             return 26;
-          } else if (info.x < 305) {
+          } else if (info.x < px(305)) {
             // space
             return 27;
           } else {
