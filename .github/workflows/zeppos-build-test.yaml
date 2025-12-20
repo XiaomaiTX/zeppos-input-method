@@ -1,0 +1,52 @@
+name: ZeppOS App Build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  WIDGET_DIR: src/data-widget
+  DIST_DIR: src/data-widget/dist
+
+jobs:
+  lint-and-fix:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ env.WIDGET_DIR }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Cache node_modules
+        uses: actions/cache@v3
+        with:
+          path: ${{ env.WIDGET_DIR }}/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles(format('{0}/package-lock.json', env.WIDGET_DIR)) }}
+          
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8
+
+      - name: Install dependencies
+        run: pnpm install
+        
+      - name: Build Test
+        run: npm install @zeppos/zeus-cli -g && zeus build
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: zeppos-app-build
+          path: ${{ env.DIST_DIR }}
+          retention-days: 30
