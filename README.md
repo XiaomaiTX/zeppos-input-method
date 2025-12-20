@@ -30,17 +30,29 @@ Coming soon — stay tuned.
 ### Embed as a Component in Your ZeppOS App
 
 ```js
+import * as hmUI from "@zos/ui";
+
 import { InputMethod } from "../utils/inputMethod";
+
+const prevText = hmUI.keyboard.getTextContext();
 
 const inputMethod = new InputMethod({
     keyboard_type: InputMethod.KEYBOARD_TYPE.ENGLISH,
     inputbox_type: InputMethod.INPUTBOX_TYPE.NORMAL,
-    text: "",
+    text: prevText,
     title: "Keyboard",
 });
 
 inputMethod.start();
 inputMethod.delete();
+
+// clean up
+onDestroy() {
+  console.log("onDestroy");
+  hmUI.keyboard.clearInput();
+  hmUI.keyboard.inputText(inputMethod.getText());
+  inputMethod.delete();
+}
 ```
 
 ## Development Guide
