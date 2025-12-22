@@ -1,10 +1,5 @@
-/*
- * Created:  CuberQAQ
- * Date:     2022/10/2
- * Describe: A JS class for Input Method
- */
-
 import * as hmUI from "@zos/ui";
+import * as hmRouter from "@zos/router";
 
 import { InputBoxLib } from "./inputboxLib";
 import { KeyBoardLib } from "./keyboardLib";
@@ -143,7 +138,12 @@ export class InputMethod {
     // 返回
     hmUI.keyboard.clearInput();
     hmUI.keyboard.inputText(this.getText());
-    hmUI.keyboard.sendFnKey(hmUI.keyboard.ENTER);
+    if (this.getText().length > 0) {
+      hmUI.keyboard.sendFnKey(hmUI.keyboard.ENTER);
+    } else if (this.getText().length == 0) {
+      hmUI.keyboard.sendFnKey(hmUI.keyboard.CANCEL);
+    }
+
     // if (globalData.params.targetAppid && globalData.params.targetUrl) {
     //   hmApp.startApp({
     //     appid: globalData.params.targetAppid,
