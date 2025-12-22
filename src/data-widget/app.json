@@ -6,7 +6,7 @@
     "appType": "app",
     "version": {
       "code": 1,
-      "name": "1.0.0"
+      "name": "1.0.1"
     },
     "icon": "icon.png",
     "vender": "XiaomaiTX",
@@ -47,7 +47,9 @@
             "page/Settings/index",
             "page/Settings/select-keyboard-type",
             "page/Settings/select-theme",
-            "page/Demo/index"
+            "page/Demo/index",
+            "page/About/index",
+            "page/About/libs"
           ]
         },
         "app-side": {

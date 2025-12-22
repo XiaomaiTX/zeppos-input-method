@@ -127,28 +127,6 @@ Page({
                 });
               },
             },
-            {
-              title: "Clean Data",
-              action: () => {
-                AsyncStorage.RemoveFile("config.json", (err, ok) => {
-                  if (err) {
-                    console.log("Error deleting config:", err);
-                  } else if (ok) {
-                    console.log("Config deleted successfully");
-                    hmRouter.exit();
-                  }
-                });
-              },
-              customStyles: {
-                  SETTINGS_BUTTON_STYLE: {
-                    color: 0xff0000,
-                  },
-                  SETTINGS_BUTTON_TITLE_STYLE: {
-                    color: 0xffffff,
-                    align_h: hmUI.align.CENTER_H,
-                },
-              },
-            },
           ],
         };
       });
