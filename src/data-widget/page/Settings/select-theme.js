@@ -1,6 +1,7 @@
 import * as hmUI from "@zos/ui";
 import * as hmRouter from "@zos/router";
 import * as hmInteraction from "@zos/interaction";
+import { getText } from "@zos/i18n";
 
 import { AsyncStorage } from "@silver-zepp/easy-storage";
 import { reactive, effect, computed } from "@x1a0ma17x/zeppos-reactive";
@@ -37,11 +38,11 @@ Page({
 
       state.PageData = computed(() => {
         return {
-          title: "Select Theme",
+          title: getText("settings.selectTheme"),
           items: [
             ...customThemes.map((theme) => {
               return {
-                title: `Preset Theme ${customThemes.indexOf(theme) + 1}`,
+                title: getText("selectTheme.presetTheme") + (customThemes.indexOf(theme) + 1),
                 description: this.colorToString(theme),
                 icon:
                   state.customTheme === theme
@@ -58,10 +59,10 @@ Page({
               };
             }),
             {
-              title: "Custom Theme",
+              title: getText("selectTheme.customTheme"),
               description: !customThemes.includes(state.customTheme)
                 ? this.colorToString(state.customTheme)
-                : "Enter Your Color",
+                : getText("selectTheme.enterYourColor"),
               icon: !customThemes.includes(state.customTheme)
                 ? "/image/checkbox-circle-fill@1x.png"
                 : "/image/checkbox-circle-empty@1x.png",

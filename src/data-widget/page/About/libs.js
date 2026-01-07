@@ -1,6 +1,7 @@
 import * as hmUI from "@zos/ui";
 import * as hmRouter from "@zos/router";
 import * as hmInteraction from "@zos/interaction";
+import { getText } from "@zos/i18n";
 
 import { reactive, effect, computed } from "@x1a0ma17x/zeppos-reactive";
 
@@ -25,7 +26,7 @@ Page({
       arc.destroy();
       state.PageData = computed(() => {
         return {
-          title: "3rd Libs",
+          title: getText("about.libs.title"),
           items: [
             {
               title: "@x1a0ma17x/zeppos-fx",

@@ -1,6 +1,7 @@
 import * as hmUI from "@zos/ui";
 import * as hmRouter from "@zos/router";
 import * as hmInteraction from "@zos/interaction";
+import { getText } from "@zos/i18n";
 
 import { AsyncStorage } from "@silver-zepp/easy-storage";
 import { reactive, effect, computed } from "@x1a0ma17x/zeppos-reactive";
@@ -32,10 +33,10 @@ Page({
       arc.destroy();
       state.PageData = computed(() => {
         return {
-          title: "Switch Keyboard",
+          title: getText("selectKeyboard.page.title"),
           items: [
             {
-              title: "English 26 Keys",
+              title: getText("selectKeyboard.english26Keys"),
               icon:
                 state.selectedKeyboardType === "EN"
                   ? "/image/checkbox-circle-fill@1x.png"
@@ -45,7 +46,7 @@ Page({
               },
             },
             {
-              title: "26键拼音",
+              title: getText("selectKeyboard.chinese26KeysPinyin"),
               icon:
                 state.selectedKeyboardType === "ZH_CN_PY"
                   ? "/image/checkbox-circle-fill@1x.png"
