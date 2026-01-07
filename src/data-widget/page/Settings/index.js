@@ -1,6 +1,7 @@
 import * as hmUI from "@zos/ui";
 import * as hmRouter from "@zos/router";
 import * as hmInteraction from "@zos/interaction";
+import { getText } from "@zos/i18n";
 
 import { AsyncStorage } from "@silver-zepp/easy-storage";
 import { reactive, effect, computed } from "@x1a0ma17x/zeppos-reactive";
@@ -51,10 +52,10 @@ Page({
 
       state.PageData = computed(() => {
         return {
-          title: "Settings",
+          title: getText("settings.title"),
           items: [
             {
-              title: "Try It Now!",
+              title: getText("settings.tryItNow"),
               action: () => {
                 hmRouter.push({
                   url: "page/Demo/index",
@@ -72,8 +73,8 @@ Page({
             },
 
             {
-              title: "Keyboard Enable Status",
-              description: state.isKeyboardEnabled ? "Enabled" : "Disabled",
+              title: getText("settings.keyboardEnableStatus"),
+              description: state.isKeyboardEnabled ? getText("common.enabled") : getText("common.disabled"),
               icon: state.isKeyboardEnabled
                 ? "image/checkbox-circle-fill@1x.png"
                 : "image/close-circle-fill@1x.png",
@@ -82,19 +83,19 @@ Page({
               },
             },
             {
-              title: "Keyboard Selected Status",
+              title: getText("settings.keyboardSelectedStatus"),
               description: state.isKeyboardSelected
-                ? "Selected"
-                : "Not Selected",
+                ? getText("common.selected")
+                : getText("common.notSelected"),
               icon: state.isKeyboardSelected
                 ? "image/checkbox-circle-fill@1x.png"
                 : "image/close-circle-fill@1x.png",
               action: () => {
-                console.log("Keyboard Selected Status");
+                console.log(getText("debug.keyboardSelectedStatus"));
               },
             },
             {
-              title: "Select Keyboard Type",
+              title: getText("settings.selectKeyboardType"),
               description: state.selectedKeyboardType,
               icon: "image/arrow-right-double-fill@1x.png",
               action: () => {
@@ -104,7 +105,7 @@ Page({
               },
             },
             {
-              title: "Select Theme",
+              title: getText("settings.selectTheme"),
               description: `${this.colorToString(state.customTheme)}`,
               icon: "image/arrow-right-double-fill@1x.png",
               action: () => {
@@ -119,7 +120,7 @@ Page({
               },
             },
             {
-              title: "About",
+              title: getText("settings.about"),
               icon: "image/arrow-right-double-fill@1x.png",
               action: () => {
                 hmRouter.push({
