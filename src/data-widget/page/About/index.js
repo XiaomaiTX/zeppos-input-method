@@ -1,6 +1,7 @@
 import * as hmUI from "@zos/ui";
 import * as hmRouter from "@zos/router";
 import * as hmInteraction from "@zos/interaction";
+import { getText } from "@zos/i18n";
 
 import { AsyncStorage } from "@silver-zepp/easy-storage";
 import { reactive, effect, computed } from "@x1a0ma17x/zeppos-reactive";
@@ -25,7 +26,7 @@ Page({
       arc.destroy();
 
       this.cleanDataDialog = hmInteraction.createModal({
-        content: "Are you sure you want to delete all data?",
+        content: getText("about.dialog.cleanDataConfirm"),
         autoHide: false,
         show: false,
         onClick: (keyObj) => {
@@ -48,22 +49,22 @@ Page({
 
       state.PageData = computed(() => {
         return {
-          title: "About",
+          title: getText("about.page.title"),
           items: [
             {
-              title: "Developer",
-              description: "@XiaomaiTX",
+              title: getText("about.developer"),
+              description: getText("about.developerName"),
             },
             {
-              title: "GitHub",
-              description: "XiaomaiTX/zeppos-input-method",
+              title: getText("about.github"),
+              description: getText("about.githubRepo"),
             },
             {
-              title: "License",
-              description: "MIT",
+              title: getText("about.license"),
+              description: getText("about.licenseType"),
             },
             {
-              title: "3rd Party Libraries",
+              title: getText("about.thirdPartyLibraries"),
               icon: "image/arrow-right-double-fill@1x.png",
               action: () => {
                 hmRouter.push({
@@ -73,11 +74,11 @@ Page({
             },
 
             {
-              title: "Version",
-              description: "1.0.1",
+              title: getText("about.version"),
+              description: getText("about.versionNumber"),
             },
             {
-              title: "Clean Data",
+              title: getText("about.cleanData"),
               action: () => {
                 this.cleanDataDialog.show(true);
               },
