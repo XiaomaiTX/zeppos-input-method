@@ -15,6 +15,7 @@ import {
 } from "./styles";
 import { LINK_EVENT_TYPE, KeyBoardCondition, InputboxCondition } from "./enums";
 import { Fx } from "@x1a0ma17x/zeppos-fx";
+import { KEYBOARD_FUNCTION_BAR_ANIM, KEYBOARD_BACKGROUND_ANIM, BUTTON_RELEASE_COLOR_ANIM } from "./anim";
 import * as hmUI from "@zos/ui";
 
 import { pinyin_dict_notone } from "./pinyin_dict_notone";
@@ -242,12 +243,7 @@ class BaseKeyboard {
       FUNCTION_BAR_IMG_STYLE,
     );
     new Fx({
-      begin: px(400) - FUNCTION_BAR_H,
-      end: BOUNDARY_Y,
-      fps: 60,
-      time: 0.2,
-      style: Fx.Styles.EASE_IN_QUAD,
-      enabled: true,
+      ...KEYBOARD_FUNCTION_BAR_ANIM,
       func: (res) => {
         this.functionBar.setProperty(hmUI.prop.MORE, {
           y: res,
@@ -260,12 +256,7 @@ class BaseKeyboard {
     this.background = hmUI.createWidget(hmUI.widget.IMG, BACKGROUND_IMG_STYLE);
     this.buttonImg = hmUI.createWidget(hmUI.widget.IMG, BUTTON_IMG_STYLE);
     new Fx({
-      begin: px(400),
-      end: BOUNDARY_Y + FUNCTION_BAR_H,
-      fps: 60,
-      time: 0.2,
-      style: Fx.Styles.EASE_IN_QUAD,
-      enabled: true,
+      ...KEYBOARD_BACKGROUND_ANIM,
       func: (res) => {
         this.background.setProperty(hmUI.prop.MORE, {
           y: res,
@@ -303,21 +294,16 @@ class BaseKeyboard {
           this.condition &= ~KeyBoardCondition.PRESS; // 清除此状态位
           let temp = hmUI.createWidget(hmUI.widget.STROKE_RECT, {
             ...this.pressMask.border,
-            color: 0xee6666,
+            color: BUTTON_RELEASE_COLOR_ANIM.startColor,
             line_width: px(3),
             radius: 6,
           });
           new Fx({
-            begin: 0,
-            end: 1.0,
-            style: Fx.Styles.EASE_OUT_QUAD,
-            fps: 30,
-            time: 0.1,
-            enabled: true,
+            ...BUTTON_RELEASE_COLOR_ANIM,
             func: (res) =>
               temp.setProperty(
                 hmUI.prop.COLOR,
-                Fx.getMixColor(0xee6666, 0x555555, res),
+                Fx.getMixColor(BUTTON_RELEASE_COLOR_ANIM.startColor, BUTTON_RELEASE_COLOR_ANIM.endColor, res),
               ),
             onStop: () => {
               hmUI.deleteWidget(temp);

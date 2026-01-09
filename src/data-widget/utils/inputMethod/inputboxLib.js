@@ -5,6 +5,7 @@
 
 import * as hmUI from "@zos/ui";
 import { Fx } from "@x1a0ma17x/zeppos-fx";
+import { CURSOR_MOVE_ANIM, FINISH_BUTTON_COLOR_OUT_ANIM, FINISH_BUTTON_COLOR_IN_ANIM } from "./anim";
 import { LINK_EVENT_TYPE, InputboxCondition } from "./enums";
 import {
   BACKGROUD_WIDGET_STYLE,
@@ -75,13 +76,9 @@ class Cursor {
         this.fxInstance.setEnable(false);
       }
       this.fxInstance = new Fx({
-        begin: this.locX,
-        end: locX,
-        fps: 60,
-        time: 0.1,
-        style: Fx.Styles.EASE_IN_QUAD,
-        enabled: true,
-        func: (x) => {
+        ...CURSOR_MOVE_ANIM,
+        func: (percent) => {
+          const x = this.locX + (locX - this.locX) * percent;
           this.widget.setProperty(
             hmUI.prop.X,
             x + this.border.x + this.offsetX,
@@ -337,29 +334,19 @@ export const InputBoxLib = {
           } else {
             console.log("click Finish");
             new Fx({
-              begin: 0,
-              end: 1,
-              fps: 60,
-              time: 0.2,
-              enabled: true,
-              style: Fx.Styles.EASE_OUT_QUAD,
+              ...FINISH_BUTTON_COLOR_OUT_ANIM,
               func: (res) =>
                 this.btnTextWidget.setProperty(
                   hmUI.prop.COLOR,
-                  Fx.getMixColor(0xfff1a6, 0x666142, res),
+                  Fx.getMixColor(FINISH_BUTTON_COLOR_OUT_ANIM.startColor, FINISH_BUTTON_COLOR_OUT_ANIM.endColor, res),
                 ),
               onStop: () => {
                 new Fx({
-                  begin: 0,
-                  end: 1,
-                  fps: 60,
-                  time: 0.2,
-                  style: Fx.Styles.EASE_IN_QUAD,
-                  enabled: true,
+                  ...FINISH_BUTTON_COLOR_IN_ANIM,
                   func: (res) =>
                     this.btnTextWidget.setProperty(
                       hmUI.prop.COLOR,
-                      Fx.getMixColor(0x666142, 0xfff1a6, res),
+                      Fx.getMixColor(FINISH_BUTTON_COLOR_IN_ANIM.startColor, FINISH_BUTTON_COLOR_IN_ANIM.endColor, res),
                     ),
                   onStop() {},
                 });
