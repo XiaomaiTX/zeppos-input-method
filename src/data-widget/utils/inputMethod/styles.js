@@ -84,8 +84,8 @@ export const INPUTBOX_BACKGROUND_IMG_STYLE = {
   src: "Skins/Black/inputbox-bg.png",
 };
 export const MASK_STYLE = {
-  x: px(50),
-  y: px(100),
+  x: px(0),
+  y: px(0),
   src: "Skins/Black/inputbox-mask.png",
 };
 export const BUTTON_TEXT_WIDGET_STYLE = {
