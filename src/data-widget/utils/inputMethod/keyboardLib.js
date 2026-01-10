@@ -6,7 +6,7 @@ import {
   BUTTON_CAPSLOCK_UP_IMG,
   BUTTON_CAPSLOCK_DOWN_IMG,
   FUNCTION_BAR_IMG_STYLE,
-  BACKGROUND_IMG_STYLE,
+  KEYBOARD_BG_IMG_STYLE,
   BUTTON_IMG_STYLE,
   PRESS_MASK_STYLE,
   CHOOSE_WORD_TEXT_STYLE,
@@ -15,7 +15,11 @@ import {
 } from "./styles";
 import { LINK_EVENT_TYPE, KeyBoardCondition, InputboxCondition } from "./enums";
 import { Fx } from "@x1a0ma17x/zeppos-fx";
-import { KEYBOARD_FUNCTION_BAR_ANIM, KEYBOARD_BACKGROUND_ANIM, BUTTON_RELEASE_COLOR_ANIM } from "./anim";
+import {
+  KEYBOARD_FUNCTION_BAR_ANIM,
+  KEYBOARD_BACKGROUND_ANIM,
+  BUTTON_RELEASE_COLOR_ANIM,
+} from "./anim";
 import * as hmUI from "@zos/ui";
 
 import { pinyin_dict_notone } from "./pinyin_dict_notone";
@@ -245,23 +249,17 @@ class BaseKeyboard {
     new Fx({
       ...KEYBOARD_FUNCTION_BAR_ANIM,
       func: (res) => {
-        this.functionBar.setProperty(hmUI.prop.MORE, {
-          y: res,
-          pos_y: 0 - res,
-        });
+        this.functionBar.setProperty(hmUI.prop.Y, res);
       },
       onStop() {},
     });
     // 创建背景
-    this.background = hmUI.createWidget(hmUI.widget.IMG, BACKGROUND_IMG_STYLE);
+    this.background = hmUI.createWidget(hmUI.widget.IMG, KEYBOARD_BG_IMG_STYLE);
     this.buttonImg = hmUI.createWidget(hmUI.widget.IMG, BUTTON_IMG_STYLE);
     new Fx({
       ...KEYBOARD_BACKGROUND_ANIM,
       func: (res) => {
-        this.background.setProperty(hmUI.prop.MORE, {
-          y: res,
-          pos_y: 0 - res,
-        });
+        this.background.setProperty(hmUI.prop.Y, res);
         this.buttonImg.setProperty(hmUI.prop.Y, res);
       },
 
@@ -303,7 +301,11 @@ class BaseKeyboard {
             func: (res) =>
               temp.setProperty(
                 hmUI.prop.COLOR,
-                Fx.getMixColor(BUTTON_RELEASE_COLOR_ANIM.startColor, BUTTON_RELEASE_COLOR_ANIM.endColor, res),
+                Fx.getMixColor(
+                  BUTTON_RELEASE_COLOR_ANIM.startColor,
+                  BUTTON_RELEASE_COLOR_ANIM.endColor,
+                  res,
+                ),
               ),
             onStop: () => {
               hmUI.deleteWidget(temp);

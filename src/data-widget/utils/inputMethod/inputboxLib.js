@@ -5,7 +5,11 @@
 
 import * as hmUI from "@zos/ui";
 import { Fx } from "@x1a0ma17x/zeppos-fx";
-import { CURSOR_MOVE_ANIM, FINISH_BUTTON_COLOR_OUT_ANIM, FINISH_BUTTON_COLOR_IN_ANIM } from "./anim";
+import {
+  CURSOR_MOVE_ANIM,
+  FINISH_BUTTON_COLOR_OUT_ANIM,
+  FINISH_BUTTON_COLOR_IN_ANIM,
+} from "./anim";
 import { LINK_EVENT_TYPE, InputboxCondition } from "./enums";
 import {
   BACKGROUD_WIDGET_STYLE,
@@ -338,7 +342,11 @@ export const InputBoxLib = {
               func: (res) =>
                 this.btnTextWidget.setProperty(
                   hmUI.prop.COLOR,
-                  Fx.getMixColor(FINISH_BUTTON_COLOR_OUT_ANIM.startColor, FINISH_BUTTON_COLOR_OUT_ANIM.endColor, res),
+                  Fx.getMixColor(
+                    FINISH_BUTTON_COLOR_OUT_ANIM.startColor,
+                    FINISH_BUTTON_COLOR_OUT_ANIM.endColor,
+                    res,
+                  ),
                 ),
               onStop: () => {
                 new Fx({
@@ -346,7 +354,11 @@ export const InputBoxLib = {
                   func: (res) =>
                     this.btnTextWidget.setProperty(
                       hmUI.prop.COLOR,
-                      Fx.getMixColor(FINISH_BUTTON_COLOR_IN_ANIM.startColor, FINISH_BUTTON_COLOR_IN_ANIM.endColor, res),
+                      Fx.getMixColor(
+                        FINISH_BUTTON_COLOR_IN_ANIM.startColor,
+                        FINISH_BUTTON_COLOR_IN_ANIM.endColor,
+                        res,
+                      ),
                     ),
                   onStop() {},
                 });
