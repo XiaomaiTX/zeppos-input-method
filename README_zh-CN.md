@@ -16,6 +16,9 @@
 - 基于 [zeppos-fx](https://github.com/XiaomaiTX/zeppos-fx) 的优质流畅的动画体验
 - 可编辑多种自定义风格主题颜色，可自定义背景图片
 
+![en-qwert-26](./assets/en-qwert-26.jpg)
+![cn-qwert-26](./assets/cn-qwert-26.jpg)
+
 ## 注意事项
 
 - 仅支持 ZeppOS API 4.2 以上的设备
