@@ -17,32 +17,28 @@ export const CONTROL_PLANE_TEXT_STYLE = {
 // keyboardLib.js
 export const BUTTON_LINE_SAFETY_DISTANCE = [10, 33, 79, null];
 export const BUTTON_LINE_NUM = 4;
-export const BUTTON_CAPSLOCK_UP_IMG = "Skins/Earth/keyboardEN_button_UP_Earth.png";
-export const BUTTON_CAPSLOCK_DOWN_IMG = "Skins/Earth/keyboardEN_button_Earth.png";
+export const BUTTON_CAPSLOCK_UP_IMG = "Skins/Black/keyboard-qwert26-up.png";
+export const BUTTON_CAPSLOCK_DOWN_IMG = "Skins/Black/keyboard-qwert26-low.png";
 export const FUNCTION_BAR_IMG_STYLE = {
   x: px(0),
-  y: px(400),
+  y: px(400) - FUNCTION_BAR_H,
   w: px(480),
-  h: px(480) - BOUNDARY_Y,
-  pos_x: 0,
-  pos_y: 0 - px(400),
-  src: "Skins/Earth/functionBar_Earth.png",
+  h: FUNCTION_BAR_H,
+  src: "Skins/Black/func-bar-bg.png",
 };
-export const BACKGROUND_IMG_STYLE = {
+export const KEYBOARD_BG_IMG_STYLE = {
   x: px(0),
   y: px(400),
   w: px(480),
   h: px(480) - BOUNDARY_Y - FUNCTION_BAR_H,
-  pos_x: 0,
-  pos_y: 0 - px(400),
-  src: "Skins/Earth/keyboard_bgd_Earth.png",
+  src: "Skins/Black/keyboard-bg.png",
 };
 export const BUTTON_IMG_STYLE = {
   x: px(0),
   y: px(400),
   w: px(480),
   h: px(240),
-  src: "Skins/Earth/keyboardEN_button_Earth.png",
+  src: BUTTON_CAPSLOCK_DOWN_IMG,
 };
 export const PRESS_MASK_STYLE = {
   x: px(500),
@@ -79,18 +75,18 @@ export const INPUTBOX_FINISH_BUTTON_STYLE = {
 export const BACKGROUD_WIDGET_STYLE = {
   x: px(0),
   y: px(0),
-  src: "Skins/Earth/backgroud_Earth.png",
+  src: "Skins/Black/background.png",
 };
 
 export const INPUTBOX_BACKGROUND_IMG_STYLE = {
-  x: px(0),
-  y: px(0),
-  src: "Skins/Earth/inputbox_bgd.png",
+  x: px(50),
+  y: px(100),
+  src: "Skins/Black/inputbox-bg.png",
 };
 export const MASK_STYLE = {
-  x: px(0),
-  y: px(0),
-  src: "Skins/Earth/inputbox_mask_Earth.png",
+  x: px(50),
+  y: px(100),
+  src: "Skins/Black/inputbox-mask.png",
 };
 export const BUTTON_TEXT_WIDGET_STYLE = {
   x: px(335),

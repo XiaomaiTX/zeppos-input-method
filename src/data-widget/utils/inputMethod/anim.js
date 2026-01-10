@@ -1,10 +1,11 @@
+import { px } from "@zos/utils";
 import { Fx } from "@x1a0ma17x/zeppos-fx";
 import { BOUNDARY_Y, FUNCTION_BAR_H } from "./styles";
 
 // 键盘功能栏显示动画配置
 export const KEYBOARD_FUNCTION_BAR_ANIM = {
-  begin: px(400) - FUNCTION_BAR_H,
-  end: BOUNDARY_Y,
+  begin: px(400 - FUNCTION_BAR_H),
+  end: px(190),
   fps: 60,
   time: 0.2,
   style: Fx.Styles.EASE_IN_QUAD,
@@ -24,7 +25,7 @@ export const KEYBOARD_BACKGROUND_ANIM = {
 // 按钮释放颜色动画配置
 export const BUTTON_RELEASE_COLOR_ANIM = {
   begin: 0,
-  end: 1.0,
+  end: 1,
   fps: 30,
   time: 0.1,
   style: Fx.Styles.EASE_OUT_QUAD,
