@@ -96,7 +96,16 @@ Page({
             },
             {
               title: getText("settings.selectKeyboardType"),
-              description: state.selectedKeyboardType,
+              description: (() => {
+                switch (state.selectedKeyboardType) {
+                  case "EN":
+                    return getText("selectKeyboard.english26Keys");
+                  case "ZH_CN_PY":
+                    return getText("selectKeyboard.chinese26KeysPinyin");
+                  default:
+                    return getText("selectKeyboard.unknown");
+                }
+              })(),
               icon: "image/arrow-right-double-fill@1x.png",
               action: () => {
                 hmRouter.push({
@@ -104,21 +113,21 @@ Page({
                 });
               },
             },
-            {
-              title: getText("settings.selectTheme"),
-              description: `${this.colorToString(state.customTheme)}`,
-              icon: "image/arrow-right-double-fill@1x.png",
-              action: () => {
-                hmRouter.push({
-                  url: "page/Settings/select-theme",
-                });
-              },
-              customStyles: {
-                SETTINGS_BUTTON_DESCRIPTION_STYLE: {
-                  color: state.customTheme,
-                },
-              },
-            },
+            // {
+            //   title: getText("settings.selectTheme"),
+            //   description: `${this.colorToString(state.customTheme)}`,
+            //   icon: "image/arrow-right-double-fill@1x.png",
+            //   action: () => {
+            //     hmRouter.push({
+            //       url: "page/Settings/select-theme",
+            //     });
+            //   },
+            //   customStyles: {
+            //     SETTINGS_BUTTON_DESCRIPTION_STYLE: {
+            //       color: state.customTheme,
+            //     },
+            //   },
+            // },
             {
               title: getText("settings.about"),
               icon: "image/arrow-right-double-fill@1x.png",
