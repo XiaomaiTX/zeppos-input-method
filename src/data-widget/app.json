@@ -1,16 +1,16 @@
 {
   "configVersion": "v3",
   "app": {
-    "appId": 20306,
+    "appId": 1102548,
     "appName": "ZeppOS InputMethod",
     "appType": "app",
     "version": {
       "code": 1,
-      "name": "1.0.1"
+      "name": "1.0.0"
     },
     "icon": "icon.png",
     "vender": "XiaomaiTX",
-    "description": "empty application"
+    "description": "A flexible, powerful, and visually appealing input method component for ZeppOS."
   },
   "permissions": ["data:os.device.info"],
   "runtime": {
@@ -73,6 +73,9 @@
   },
   "i18n": {
     "en-US": {
+      "appName": "ZeppOS InputMethod"
+    },
+    "zh-CN": {
       "appName": "ZeppOS InputMethod"
     }
   },
