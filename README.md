@@ -16,8 +16,13 @@ EN | [中文文档](./README_zh-CN.md)
 - **Smooth animation experience** powered by [zeppos-fx](https://github.com/XiaomaiTX/zeppos-fx).
 - **Fully customizable theme colors** and support for **custom background images**.
 
-![en-qwert-26](./assets/en-qwert-26.jpg)
-![cn-qwert-26](./assets/cn-qwert-26.jpg)
+| English QWERTY Layout | Chinese QWERTY Layout |
+| --- | --- |
+| ![en-qwert-26](./assets/en-qwert-26.jpg) | ![cn-qwert-26](./assets/cn-qwert-26.jpg) |
+
+| English QWERTY Demo | Chinese QWERTY Demo |
+| --- | --- |
+| ![en-demo](./assets/en-demo.gif) | ![cn-demo](./assets/cn-demo.gif) |
 
 ## Important Notes
 
