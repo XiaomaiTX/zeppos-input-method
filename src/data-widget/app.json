@@ -2,7 +2,7 @@
   "configVersion": "v3",
   "app": {
     "appId": 1102548,
-    "appName": "ZeppOS InputMethod",
+    "appName": "Cafero Keyboard",
     "appType": "app",
     "version": {
       "code": 1,
@@ -26,7 +26,7 @@
         "data-widget": {
           "widgets": [
             {
-              "name": "InputMethod",
+              "name": "Cafero Keyboard",
               "path": "data-widget/index",
               "icon": "icon.png",
               "runtime": {
@@ -73,10 +73,10 @@
   },
   "i18n": {
     "en-US": {
-      "appName": "ZeppOS InputMethod"
+      "appName": "Cafero Keyboard"
     },
     "zh-CN": {
-      "appName": "ZeppOS InputMethod"
+      "appName": "Cafero Keyboard"
     }
   },
   "defaultLanguage": "en-US"
