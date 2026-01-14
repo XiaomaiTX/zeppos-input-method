@@ -1,6 +1,4 @@
 import * as hmUI from "@zos/ui";
-import { onGesture, GESTURE_UP } from "@zos/interaction";
-
 import { AsyncStorage } from "@silver-zepp/easy-storage";
 
 import { InputMethod } from "../utils/inputMethod";
@@ -25,6 +23,9 @@ DataWidget({
   build() {
     console.log("build");
     console.log(this.state.text);
+
+    hmUI.setStatusBarVisible(false)
+
     AsyncStorage.ReadJson("config.json", (err, config) => {
       if (!err) {
         inputMethod.keyboard_type = config.selectedKeyboardType;
