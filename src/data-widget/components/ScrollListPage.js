@@ -23,7 +23,8 @@ export class ScrollListPage {
             ...this.styles.SETTINGS_CONTAINER_STYLE,
             h:
                 this.state.items.length *
-                (this.styles.SETTINGS_BUTTON_STYLE.h + px(10)),
+                (this.styles.SETTINGS_BUTTON_STYLE.h + px(10)) +
+                px(100),
         });
 
         for (let i = 0; i < this.state.items.length; i++) {
