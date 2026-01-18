@@ -15,7 +15,7 @@ export const CONTROL_PLANE_TEXT_STYLE = {
 };
 
 // keyboardLib.js
-export const BUTTON_LINE_SAFETY_DISTANCE = [10, 33, 79, null];
+export const BUTTON_LINE_SAFETY_DISTANCE = [px(10), px(33), px(79), null];
 export const BUTTON_LINE_NUM = 4;
 export const BUTTON_CAPSLOCK_UP_IMG = "Skins/Black/keyboard-qwert26-up.png";
 export const BUTTON_CAPSLOCK_DOWN_IMG = "Skins/Black/keyboard-qwert26-low.png";
@@ -211,9 +211,9 @@ export const QWERT_LAYOUT_STYLE = {
   ROW3_OFFSET_Y: px(125),
   ROW4_OFFSET_Y: px(425),
 
-  KEYS_PER_ROW1: px(10),
-  KEYS_PER_ROW2: px(9),
-  KEYS_PER_ROW3: px(7),
+  KEYS_PER_ROW1: 10,
+  KEYS_PER_ROW2: 9,
+  KEYS_PER_ROW3: 7,
 
   CAPSLOCK_WIDTH: px(92),
   CAPSLOCK_HEIGHT: px(48),

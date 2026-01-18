@@ -76,7 +76,7 @@ class BaseKeyboard {
             min0(
               Math.floor((info.x - this.buttonLineSafeDistance[0]) / px(46)),
             ),
-            px(9),
+            9,
           );
         case 1:
           return (
@@ -84,8 +84,8 @@ class BaseKeyboard {
               min0(
                 Math.floor((info.x - this.buttonLineSafeDistance[1]) / px(46)),
               ),
-              px(8),
-            ) + px(10)
+              8,
+            ) + 10
           );
         case 2:
           return (
@@ -93,8 +93,8 @@ class BaseKeyboard {
               min0(
                 Math.floor((info.x - this.buttonLineSafeDistance[2]) / px(46)),
               ),
-              px(6),
-            ) + px(19)
+              6,
+            ) + 19
           );
         case 3:
           if (info.x <= px(175)) {
