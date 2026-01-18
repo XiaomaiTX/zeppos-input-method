@@ -23,8 +23,7 @@ export class ScrollListPage {
             ...this.styles.SETTINGS_CONTAINER_STYLE,
             h:
                 this.state.items.length *
-                (this.styles.SETTINGS_BUTTON_STYLE.h + px(10)) +
-                px(100),
+                (this.styles.SETTINGS_BUTTON_STYLE.h + px(10)) + px(100),
         });
 
         for (let i = 0; i < this.state.items.length; i++) {
@@ -38,10 +37,9 @@ export class ScrollListPage {
                 y: itemStyles.SETTINGS_BUTTON_STYLE.y + this.state.buttonOffset,
             });
             buttonBg.addEventListener(hmUI.event.CLICK_UP, () => {
-                if (this.state.items[i] && this.state.items[i].action){
+                if (this.state.items[i] && this.state.items[i].action) {
                     this.state.items[i].action();
                 }
-                
             });
 
             const itemWidgets = {
@@ -131,24 +129,40 @@ export class ScrollListPage {
         return merged;
     }
     updateUI(params) {
+        this.state.buttonOffset = 0;
         for (let i = 0; i < params.items.length; i++) {
             const itemData = params.items[i];
             const itemWidgets = this.state.widgets[i];
+
+            const itemStyles = this.mergeStyles(
+                this.styles,
+                params.items[i].customStyles || {}
+            );
+
             if (itemData) {
                 if (itemData.hasOwnProperty("description")) {
-                    itemWidgets.subtitleWidget.setProperty(
-                        hmUI.prop.TEXT,
-                        itemData.title
-                    );
-                    itemWidgets.descriptionWidget.setProperty(
-                        hmUI.prop.TEXT,
-                        itemData.description || ""
-                    );
+                    itemWidgets.subtitleWidget.setProperty(hmUI.prop.MORE, {
+                        ...itemStyles.SETTINGS_BUTTON_SUBTITLE_STYLE,
+                        y:
+                            itemStyles.SETTINGS_BUTTON_SUBTITLE_STYLE.y +
+                            this.state.buttonOffset,
+                        text: itemData.title,
+                    });
+                    itemWidgets.descriptionWidget.setProperty(hmUI.prop.MORE, {
+                        ...itemStyles.SETTINGS_BUTTON_DESCRIPTION_STYLE,
+                        y:
+                            itemStyles.SETTINGS_BUTTON_DESCRIPTION_STYLE.y +
+                            this.state.buttonOffset,
+                        text: itemData.description || "",
+                    });
                 } else {
-                    itemWidgets.titleWidget.setProperty(
-                        hmUI.prop.TEXT,
-                        itemData.title
-                    );
+                    itemWidgets.titleWidget.setProperty(hmUI.prop.MORE, {
+                        ...itemStyles.SETTINGS_BUTTON_TITLE_STYLE,
+                        y:
+                            itemStyles.SETTINGS_BUTTON_TITLE_STYLE.y +
+                            this.state.buttonOffset,
+                        text: itemData.title,
+                    });
                 }
             }
             if (itemData && itemData.icon) {
@@ -157,6 +171,8 @@ export class ScrollListPage {
                     itemData.icon
                 );
             }
+            this.state.buttonOffset +=
+                itemStyles.SETTINGS_BUTTON_STYLE.h + px(10);
         }
     }
 }
@@ -196,17 +212,17 @@ const Styles = {
         x: px(0),
         y: px(0),
         w: px(420),
-        h: px(80),
+        h: px(100),
         radius: px(10),
         color: 0x0a0a0a,
     },
     SETTINGS_BUTTON_TITLE_STYLE: {
         x: px(20),
-        y: px(23),
+        y: px(25),
         w: px(380),
-        h: px(35),
+        h: px(50),
         color: 0xffffff,
-        text_size: px(24),
+        text_size: px(36),
         align_h: hmUI.align.LEFT,
         align_v: hmUI.align.CENTER_V,
         text_style: hmUI.text_style.NONE,
@@ -217,9 +233,9 @@ const Styles = {
         x: px(20),
         y: px(8),
         w: px(380),
-        h: px(35),
+        h: px(42),
         color: 0xffffff,
-        text_size: px(20),
+        text_size: px(36),
         align_h: hmUI.align.LEFT,
         align_v: hmUI.align.CENTER_V,
         text_style: hmUI.text_style.NONE,
@@ -227,11 +243,11 @@ const Styles = {
     },
     SETTINGS_BUTTON_DESCRIPTION_STYLE: {
         x: px(20),
-        y: px(37),
+        y: px(50),
         w: px(380),
-        h: px(35),
+        h: px(36),
         color: 0x9e9e9e,
-        text_size: px(20),
+        text_size: px(32),
         align_h: hmUI.align.LEFT,
         align_v: hmUI.align.CENTER_V,
         text_style: hmUI.text_style.NONE,
@@ -239,7 +255,7 @@ const Styles = {
     },
     SETTINGS_BUTTON_ICON_STYLE: {
         x: px(375),
-        y: px(29),
+        y: px(38),
         w: px(24),
         h: px(24),
     },
