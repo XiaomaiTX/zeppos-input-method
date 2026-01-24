@@ -93,11 +93,14 @@ export const BUTTON_TEXT_WIDGET_STYLE = {
   y: px(105),
   w: px(80),
   h: px(55),
-  text: "完成",
   text_size: px(35),
   color: 0xfff1a6,
   align_h: hmUI.align.CENTER_H,
   align_v: hmUI.align.CENTER_V,
+  text_i18n: {
+    "en-US": "Done",
+    "zh-CN": "完成",
+  },
 };
 export const TITLE_WIDGET_STYLE = {
   x: px(110),
