@@ -50,9 +50,9 @@ export const PRESS_MASK_STYLE = {
   radius: 6,
 };
 export const CHOOSE_WORD_TEXT_STYLE = {
-  x: 0,
+  x: px(20),
   y: px(190),
-  w: px(480),
+  w: px(460),
   h: BOUNDARY_Y,
   color: 0xffffff,
   text_size: px(30),

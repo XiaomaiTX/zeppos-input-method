@@ -445,6 +445,10 @@ export const KeyBoardLib = {
   EN: class EN extends BaseKeyboard {},
   NUM: class NUM {},
   ZH_CN_PY: class ZH_CN_PY extends BaseKeyboard {
+    constructor(options) {
+      super(options);
+      this.chooseWordText.border.x = px(20);
+    }
     chooseWord(inputText) {
       console.log("[chooseWord] inputText:", inputText);
       const currentInput = this.father.getText();
@@ -455,7 +459,7 @@ export const KeyBoardLib = {
         if (updatedInput === "") {
           this.chooseWordArray = [];
 
-          this.chooseWordText.border.x = 0;
+          this.chooseWordText.border.x = px(20);
           this.chooseWordText.border.w = 0;
           this.chooseWordText.widget.setProperty(hmUI.prop.MORE, {
             x: this.chooseWordText.border.x,
@@ -497,7 +501,7 @@ export const KeyBoardLib = {
         },
       ).width;
 
-      this.chooseWordText.border.x = 0;
+      this.chooseWordText.border.x = px(20);
       this.chooseWordText.widget.setProperty(hmUI.prop.MORE, {
         x: this.chooseWordText.border.x,
         w: this.chooseWordText.border.w,
